@@ -12,7 +12,7 @@ for root, dirs, files in os.walk(".\\dist"):
         if file.startswith("style"):
             with open(f'.\\dist\\_assets\\{file}', 'r', encoding='utf-8') as fp:
                 content = fp.read()
-                content = content.replace('_assets', 'vue-bili-danmaku')
+                content = content.replace('_assets', '')
                 with open(f'.\\dist\\_assets\\{file}', 'w', encoding='utf-8') as f:
                     f.write(content)
             break
