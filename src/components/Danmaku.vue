@@ -11,12 +11,12 @@ export default {
   data() { return { face: "https://i0.hdslb.com/bfs/face/member/noface.jpg", op: 0, lf: -3 } },
   props: { uid: Number, sender: String },
   async mounted() {
-    setTimeout(() => {this.op = 1; this.lf = 0}, 10)
     this.face = this.uid2face[this.uid]
     if (this.face == null) {
         this.face = (await axios.get("https://aliyun.nana7mi.link/user.User(uid=" + this.uid + ").get_user_info()")).data.data.face + "@55w_55h.webp"
         this.uid2face[this.uid] = this.face
     }
+    setTimeout(() => {this.op = 1; this.lf = 0}, 10)
   }
 }
 </script>

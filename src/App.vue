@@ -1,5 +1,5 @@
 <template>
-  <div id="main">
+  <div id="main" :style="'transition: all '+ this.ts + 's;'">
     <Danmaku v-for="dm in dms" :uid="dm.uid" :sender="dm.sender">{{ dm.msg }}</Danmaku>
   </div>
 </template>
@@ -10,17 +10,13 @@ import { onClickShow } from './bili-ws'
 
 export default {
   name: 'App',
-  components: {
-    Danmaku
-  },
-  data() { return { dms: [] } },
+  components: { Danmaku },
+  data() { return { dms: [], ts: 0.2 } },
   methods: {
     getQueryString(name) {
       var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
       var r = window.location.search.substr(1).match(reg);
-      if (r != null) {
-        return decodeURIComponent(r[2]);
-      }
+      if (r != null) return decodeURIComponent(r[2]);
       return null;
     }
   },
@@ -28,10 +24,8 @@ export default {
     await onClickShow(this.getQueryString("roomid") || 21452505, this.dms)
     var main = document.getElementById("main")
     setInterval(() => {
-      main.style.top = Math.min(
-        main.style.top.replace("px", ""),
-        window.innerHeight - main.offsetHeight
-      ) + "px"
+      if (main.style.top.replace("px", "") < window.innerHeight - main.offsetHeight) { this.ts = 0; setTimeout(() => this.ts = 0.2, 15) }
+      main.style.top = (window.innerHeight - main.offsetHeight) + "px"
     }, 16)
   }
 }
@@ -42,6 +36,5 @@ export default {
   position: relative;
   display: flex;
   flex-direction: column;
-  transition: all 0.2s;
 }
 </style>

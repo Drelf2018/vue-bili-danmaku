@@ -11,7 +11,7 @@ export async function onClickShow(roomid, dms) {
         alert("房间号错误");
         return;
     }
-    openSocket(socketData.data.host, roomData.data.room_id, dms);
+    openSocket(socketData.data.host, roomData.data.room_id, roomData.data.uid, dms);
 }
 
 async function getRoomId(id) {
@@ -84,7 +84,7 @@ function decode(blob, call) {
     };
     reader.readAsArrayBuffer(blob);
 }
-function openSocket(url, room_id, dms) {
+function openSocket(url, room_id, owner, dms) {
     let timer = null;
     let ws = new WebSocket(`wss://${url}/sub`);
     let json = {
@@ -121,14 +121,18 @@ function openSocket(url, room_id, dms) {
             if (packet.op == 5) {
                 //会同时有多个 数发过来 所以要循环
                 for (let i = 0; i < packet.body.length; i++) {
-                    var element = packet.body[i];
-                    if (element.cmd == "DANMU_MSG") {
-                        dms.push({
-                            uid: element.info[2][0],
-                            sender: element.info[2][7] == "" ? "default" : "guard",
-                            msg: element.info[1]
-                        })
-                    }
+                    setTimeout(()=>{
+                        var element = packet.body[i];
+                        if (element.cmd == "DANMU_MSG") {
+                            if(dms.length > 200) while(dms.length > 20) dms.shift()
+                            dms.push({
+                                uid: element.info[2][0],
+                                sender: element.info[2][0] == owner ? "self" : element.info[2][7] == "" ? "default" : "guard",
+                                msg: element.info[1]
+                            })
+                            document.title = "Vue-Bili-Danmaku (" + dms.length + ")"
+                        }
+                    }, i*30)
                 }
             }
         });
