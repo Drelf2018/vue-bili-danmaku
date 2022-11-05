@@ -1,6 +1,6 @@
 <template>
   <div id="main" :style="'transition: all '+ this.ts + 's;'">
-    <Danmaku v-for="dm in dms" :uid="dm.uid" :sender="dm.sender">{{ dm.msg }}</Danmaku>
+    <Danmaku v-for="dm in dms" :uid="dm.uid" :sender="dm.sender" :src="dm.src">{{ dm.msg }}</Danmaku>
   </div>
 </template>
 
@@ -26,7 +26,7 @@ export default {
     setInterval(() => {
       if (main.style.top.replace("px", "") < window.innerHeight - main.offsetHeight) { this.ts = 0; setTimeout(() => this.ts = 0.2, 15) }
       main.style.top = (window.innerHeight - main.offsetHeight) + "px"
-    }, 16)
+    }, 1000)
   }
 }
 </script>

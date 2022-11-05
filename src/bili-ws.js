@@ -128,7 +128,8 @@ function openSocket(url, room_id, owner, dms) {
                             dms.push({
                                 uid: element.info[2][0],
                                 sender: element.info[2][0] == owner ? "self" : element.info[2][7] == "" ? "default" : "guard",
-                                msg: element.info[1]
+                                msg: element.info[1],
+                                src: element.info[0][13].url
                             })
                             document.title = "Vue-Bili-Danmaku (" + dms.length + ")"
                         }

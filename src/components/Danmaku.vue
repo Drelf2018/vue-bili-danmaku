@@ -1,7 +1,10 @@
 <template>
   <div class="dmk" :style="'opacity: ' + op + '; left: ' + lf + 'em;'">
-    <img :src="face" alt>
-    <span :class="[sender, 'message']"><slot></slot></span>
+    <img class='face' :src="face" alt>
+    <span :class="[sender, 'message']">
+        <slot v-if="!src"></slot>
+        <img class="icon" v-if="src" :src="src">
+    </span>
   </div>
 </template>
 
@@ -9,7 +12,7 @@
 export default {
   name: 'Danmaku',
   data() { return { face: "https://i0.hdslb.com/bfs/face/member/noface.jpg", op: 0, lf: -3 } },
-  props: { uid: Number, sender: String },
+  props: { uid: Number, sender: String, src: String },
   async mounted() {
     this.face = this.uid2face[this.uid]
     if (this.face == null) {
@@ -30,12 +33,17 @@ export default {
     max-width: 100%;
 }
 
-img {
+.face {
     width: 3.3em;
     height: 3.3em;
     border-radius: 50%;
     box-shadow: 0px 3px 4px 0px black;
     margin-right: 0.87em;
+}
+
+.icon {
+    max-height: 3em;
+    max-width: 3em;
 }
 
 .default {
@@ -54,6 +62,8 @@ img {
 }
 
 .message {
+    display: flex;
+    align-items: center;
     position: relative;
     width: max-content;
     padding: 0.31em 0.92em;
