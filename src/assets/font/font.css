@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'Homo';
+    src: url('HarmonyOS_Sans_SC_Bold.ttf');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Novecento';
+    src: url('Novecento WideMedium.otf');
+    font-weight: normal;
+    font-style: normal;
+}
