@@ -121,17 +121,15 @@ function openSocket(url, room_id, owner, dms) {
             if (packet.op == 5) {
                 //会同时有多个 数发过来 所以要循环
                 for (let i = 0; i < packet.body.length; i++) {
-                    setTimeout(()=>{
-                        var element = packet.body[i];
-                        if (element.cmd == "DANMU_MSG") {
-                            dms.push({
-                                uid: element.info[2][0],
-                                sender: element.info[2][0] == owner ? "self" : element.info[2][7] == "" ? "default" : "guard",
-                                msg: element.info[1],
-                                src: element.info[0][13].url
-                            })
-                        }
-                    }, i*30)
+                    var element = packet.body[i];
+                    if (element.cmd == "DANMU_MSG") {
+                        dms.push({
+                            uid: element.info[2][0],
+                            sender: element.info[2][0] == owner ? "self" : element.info[2][7] == "" ? "default" : "guard",
+                            msg: element.info[1],
+                            src: element.info[0][13].url
+                        })
+                    }
                 }
             }
         });

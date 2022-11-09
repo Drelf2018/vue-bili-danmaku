@@ -1,16 +1,14 @@
 <template>
   <div class="dmk" :style="'opacity: ' + op + '; left: ' + lf + 'em;'">
     <img class='face' :src="face" alt>
-    <span :class="[sender, 'message']">
+    <span :class="[sender, 'message']" :style="src ? 'padding: 0.6em' : ''">
         <slot v-if="!src"></slot>
-        <img class="icon" v-if="src" :src="src">
+        <img v-if="src" :src="src" style="max-width: 3em">
     </span>
   </div>
 </template>
 
 <script>
-import { onUpdated } from 'vue';
-
 export default {
   name: 'Danmaku',
   data() { return { face: "https://i0.hdslb.com/bfs/face/member/noface.jpg", op: 0, lf: -3 } },
@@ -19,15 +17,16 @@ export default {
     await this.getFace()
     setTimeout(() => {this.op = 1; this.lf = 0}, 10)
   },
-  async onUpdated() {
+  async updated() {
     await this.getFace()
   },
   methods: {
     async getFace() {
-        this.face = this.uid2face[this.uid]
-        if (this.face == null) {
+        if (this.uid2face[this.uid] == null) {
             this.face = (await axios.get("https://aliyun.nana7mi.link/user.User(uid=" + this.uid + ").get_user_info()")).data.data.face + "@55w_55h.webp"
             this.uid2face[this.uid] = this.face
+        } else {
+            this.face = this.uid2face[this.uid]
         }
     }
   }
@@ -49,11 +48,6 @@ export default {
     border-radius: 50%;
     box-shadow: 0px 3px 4px 0px black;
     margin-right: 0.87em;
-}
-
-.icon {
-    max-height: 3em;
-    max-width: 3em;
 }
 
 .default {

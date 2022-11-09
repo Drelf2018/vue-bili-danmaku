@@ -12,7 +12,7 @@ import { onClickShow } from './bili-ws'
 export default {
   name: 'App',
   components: { Danmaku },
-  data() { return { dms: [], ts: 0.2 } },
+  data() { return { dms: [] } },
   methods: {
     getQueryString(name) {
       var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
@@ -23,20 +23,17 @@ export default {
   },
   async mounted() {
     await onClickShow(this.getQueryString("roomid") || 21452505, this.dms)
-    var main = document.getElementById("main")
-    setInterval(() => {
-      if(this.dms.length > 40) while(this.dms.length > 20) this.dms.shift()
-      setTimeout(() => main.style.top = (window.innerHeight - main.offsetHeight) + "px", 1)
-    }, 500)
+    setInterval(() => {if(this.dms.length > 30) while(this.dms.length > 15) this.dms.shift()}, 1000)
   }
 }
 </script>
 
 <style>
 #main {
-  position: relative;
+  position: absolute;
   display: flex;
   flex-direction: column;
-  transition: all 0.2s
+  bottom: 0px;
+  width: calc(100% - 16px);
 }
 </style>
