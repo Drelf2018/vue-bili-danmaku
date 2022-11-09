@@ -124,14 +124,12 @@ function openSocket(url, room_id, owner, dms) {
                     setTimeout(()=>{
                         var element = packet.body[i];
                         if (element.cmd == "DANMU_MSG") {
-                            if(dms.length > 200) while(dms.length > 20) dms.shift()
                             dms.push({
                                 uid: element.info[2][0],
                                 sender: element.info[2][0] == owner ? "self" : element.info[2][7] == "" ? "default" : "guard",
                                 msg: element.info[1],
                                 src: element.info[0][13].url
                             })
-                            document.title = "Vue-Bili-Danmaku (" + dms.length + ")"
                         }
                     }, i*30)
                 }

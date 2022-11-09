@@ -9,17 +9,27 @@
 </template>
 
 <script>
+import { onUpdated } from 'vue';
+
 export default {
   name: 'Danmaku',
   data() { return { face: "https://i0.hdslb.com/bfs/face/member/noface.jpg", op: 0, lf: -3 } },
   props: { uid: Number, sender: String, src: String },
   async mounted() {
-    this.face = this.uid2face[this.uid]
-    if (this.face == null) {
-        this.face = (await axios.get("https://aliyun.nana7mi.link/user.User(uid=" + this.uid + ").get_user_info()")).data.data.face + "@55w_55h.webp"
-        this.uid2face[this.uid] = this.face
-    }
+    await this.getFace()
     setTimeout(() => {this.op = 1; this.lf = 0}, 10)
+  },
+  async onUpdated() {
+    await this.getFace()
+  },
+  methods: {
+    async getFace() {
+        this.face = this.uid2face[this.uid]
+        if (this.face == null) {
+            this.face = (await axios.get("https://aliyun.nana7mi.link/user.User(uid=" + this.uid + ").get_user_info()")).data.data.face + "@55w_55h.webp"
+            this.uid2face[this.uid] = this.face
+        }
+    }
   }
 }
 </script>
