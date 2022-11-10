@@ -22,7 +22,7 @@ export default {
     }
   },
   async mounted() {
-    await onClickShow(window.location.pathname.replace("/", ""), this.dms)
+    await onClickShow(this.getQueryString("roomid", 21452505), this.dms)
     var max_len = this.getQueryString("max", 30)
     var min_len = this.getQueryString("min", 15)
     setInterval(() => {if(this.dms.length > max_len) while(this.dms.length > min_len) this.dms.shift()}, 1000)
