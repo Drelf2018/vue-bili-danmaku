@@ -26,7 +26,6 @@ export default {
     var max_len = this.getQueryString("max", 30)
     var min_len = this.getQueryString("min", 15)
     setInterval(() => {if(this.dms.length > max_len) while(this.dms.length > min_len) this.dms.shift()}, 1000)
-    // setInterval(() => {if(this.dms.length > 0) this.dms.push(this.dms[0])}, 50)
   }
 }
 </script>
