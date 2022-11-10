@@ -125,7 +125,7 @@ function openSocket(url, room_id, owner, dms) {
                     if (element.cmd == "DANMU_MSG") {
                         dms.push({
                             uid: element.info[2][0],
-                            sender: element.info[2][0] == owner ? "self" : element.info[2][7] == "" ? "default" : "guard",
+                            sender: element.info[2][0] == owner ? "self" : element.info[2][2] == 1 ? "owner" : element.info[2][7] == "" ? "default" : "guard",
                             msg: element.info[1],
                             src: element.info[0][13].url
                         })

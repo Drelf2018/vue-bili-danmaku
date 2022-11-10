@@ -14,16 +14,19 @@ export default {
   components: { Danmaku },
   data() { return { dms: [] } },
   methods: {
-    getQueryString(name) {
+    getQueryString(name, def) {
       var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
       var r = window.location.search.slice(1).match(reg);
       if (r != null) return decodeURIComponent(r[2]);
-      return null;
+      return def;
     }
   },
   async mounted() {
-    await onClickShow(this.getQueryString("roomid") || 21452505, this.dms)
-    setInterval(() => {if(this.dms.length > 30) while(this.dms.length > 15) this.dms.shift()}, 1000)
+    await onClickShow(window.location.pathname.replace("/", ""), this.dms)
+    var max_len = this.getQueryString("max", 30)
+    var min_len = this.getQueryString("min", 15)
+    setInterval(() => {if(this.dms.length > max_len) while(this.dms.length > min_len) this.dms.shift()}, 1000)
+    // setInterval(() => {if(this.dms.length > 0) this.dms.push(this.dms[0])}, 50)
   }
 }
 </script>

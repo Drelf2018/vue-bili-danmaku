@@ -60,6 +60,11 @@ export default {
     --color-text: rgb(245, 245, 247);
 }
 
+.owner {
+    --color-bg: rgb(96, 131, 239);
+    --color-text: rgb(245, 245, 247);
+}
+
 .self {
     --color-bg: rgb(243, 213, 5);
     --color-text: rgb(55, 54, 52);
