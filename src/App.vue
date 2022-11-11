@@ -12,20 +12,28 @@ import { onClickShow } from './bili-ws'
 export default {
   name: 'App',
   components: { Danmaku },
-  data() { return { dms: [] } },
+  data() { return { dms: [], pos: null } },
   methods: {
     getQueryString(name, def) {
       var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
       var r = window.location.search.slice(1).match(reg);
       if (r != null) return decodeURIComponent(r[2]);
       return def;
+    },
+    clear() {
+      var alpha = document.getElementById("main").offsetHeight / window.innerHeight
+      if(alpha > 3) {
+        for(var i=0; i < (this.pos || 20); i++) this.dms.shift()
+        this.pos = null
+      } else if (alpha > 1.5) {
+        if(!this.pos) this.pos = this.dms.length 
+      }
     }
   },
   async mounted() {
     await onClickShow(this.getQueryString("roomid", 21452505), this.dms)
-    var max_len = this.getQueryString("max", 30)
-    var min_len = this.getQueryString("min", 15)
-    setInterval(() => {if(this.dms.length > max_len) while(this.dms.length > min_len) this.dms.shift()}, 1000)
+    document.getElementById("app").style.zoom = this.getQueryString("zoom", 1)
+    setInterval(this.clear, 1000)
   }
 }
 </script>

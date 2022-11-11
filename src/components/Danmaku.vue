@@ -1,9 +1,9 @@
 <template>
-  <div class="dmk" :style="'opacity: ' + op + '; left: ' + lf + 'em;'">
+  <div :class="{'close': !face, 'dmk': true}">
     <img class='face' :src="face" alt>
     <span :class="[sender, 'message']" :style="src ? 'padding: 0.6em' : ''">
-        <slot v-if="!src"></slot>
-        <img v-if="src" :src="src" style="max-width: 3em">
+      <slot v-if="!src"></slot>
+      <img v-if="src" :src="src" style="max-width: 3em">
     </span>
   </div>
 </template>
@@ -11,22 +11,28 @@
 <script>
 export default {
   name: 'Danmaku',
-  data() { return { face: "https://i0.hdslb.com/bfs/face/member/noface.jpg", op: 0, lf: -3 } },
+  data() { return { face: null } },
   props: { uid: Number, sender: String, src: String },
-  async mounted() {
-    await this.getFace()
-    setTimeout(() => {this.op = 1; this.lf = 0}, 10)
+  mounted() {
+    this.getFace(true)
   },
-  async updated() {
-    await this.getFace()
+  updated() {
+    this.getFace(false)
   },
   methods: {
-    async getFace() {
+    getFace(first) {
         if (this.uid2face[this.uid] == null) {
-            this.face = (await axios.get("https://aliyun.nana7mi.link/user.User(uid=" + this.uid + ").get_user_info()")).data.data.face + "@55w_55h.webp"
-            this.uid2face[this.uid] = this.face
+            axios.get("https://aliyun.nana7mi.link/user.User(uid=" + this.uid + ").get_user_info()")
+            .then(res => {
+                this.face = res.data.data.face + "@55w_55h.webp"
+                this.uid2face[this.uid] = this.face
+            })
+            .catch(err => { 
+                this.face = "https://i0.hdslb.com/bfs/face/member/noface.jpg"
+            })
         } else {
-            this.face = this.uid2face[this.uid]
+            if(first) setTimeout(() => this.face = this.uid2face[this.uid], 10)
+            else this.face = this.uid2face[this.uid]
         }
     }
   }
@@ -34,12 +40,18 @@ export default {
 </script>
 
 <style>
+.close {
+    opacity: 0;
+    left: -3em !important;
+}
+
 .dmk {
     position: relative;
     display: flex;
     margin: 0.25em 0;
     transition: all 0.49s;
     max-width: 100%;
+    left: 0;
 }
 
 .face {
