@@ -22,10 +22,10 @@ export default {
     },
     clear() {
       var alpha = document.getElementById("main").offsetHeight / window.innerHeight
-      if(alpha > 3) {
+      if(alpha > 4) {
         for(var i=0; i < (this.pos || 20); i++) this.dms.shift()
         this.pos = null
-      } else if (alpha > 1.5) {
+      } else if (alpha > 2) {
         if(!this.pos) this.pos = this.dms.length 
       }
     }
