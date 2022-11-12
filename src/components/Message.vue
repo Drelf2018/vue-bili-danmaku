@@ -1,6 +1,6 @@
 <template>
   <Danmaku
-    v-if="dm.cmd == 'DANMU_MSG0'"
+    v-if="dm.cmd == 'DANMU_MSG'"
     :uid="dm.info.uid"
     :sender="dm.info.sender"
     :src="dm.info.src">
