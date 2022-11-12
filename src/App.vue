@@ -1,17 +1,17 @@
 <template>
   <title>Vue-Bili-Danmaku: {{ dms.length }}</title>
   <div id="main">
-    <Danmaku v-for="dm in dms" :uid="dm.uid" :sender="dm.sender" :src="dm.src">{{ dm.msg }}</Danmaku>
+    <Message v-for="dm in dms" :dm="dm" />
   </div>
 </template>
 
 <script>
-import Danmaku from './components/Danmaku.vue';
+import Message from './components/Message.vue';
 import { onClickShow } from './bili-ws'
 
 export default {
   name: 'App',
-  components: { Danmaku },
+  components: { Message },
   data() { return { dms: [], pos: null } },
   methods: {
     getQueryString(name, def) {
@@ -22,10 +22,10 @@ export default {
     },
     clear() {
       var alpha = document.getElementById("main").offsetHeight / window.innerHeight
-      if(alpha > 4) {
-        for(var i=0; i < (this.pos || 20); i++) this.dms.shift()
+      if(alpha > 5) {
+        for(var i=0; i < (this.pos || 10); i++) this.dms.shift()
         this.pos = null
-      } else if (alpha > 2) {
+      } else if (alpha > 2.5) {
         if(!this.pos) this.pos = this.dms.length 
       }
     }
@@ -33,7 +33,7 @@ export default {
   async mounted() {
     await onClickShow(this.getQueryString("roomid", 21452505), this.dms)
     document.getElementById("app").style.zoom = this.getQueryString("zoom", 1)
-    setInterval(this.clear, 1000)
+    setInterval(this.clear, 500)
   }
 }
 </script>
