@@ -14,25 +14,26 @@ export default {
   data() { return { face: null } },
   props: { uid: Number, sender: String, src: String },
   mounted() {
-    this.getFace(true)
+    this.loadFace(true)
   },
   updated() {
-    this.getFace(false)
+    this.loadFace(false)
   },
   methods: {
-    getFace(first) {
-        if (this.uid2face[this.uid] == null) {
-            axios.get("https://aliyun.nana7mi.link/user.User(uid=" + this.uid + ").get_user_info()")
+    loadFace(first) {
+        var face = this.getFace(this.uid)
+        if (face == null) {
+            axios.get(`https://aliyun.nana7mi.link/user.User(uid=${this.uid}).get_user_info()`)
             .then(res => {
-                this.face = res.data.data.face + "@55w_55h.webp"
-                this.uid2face[this.uid] = this.face
+                this.face = res.data.data.face
+                this.setFace(this.uid, this.face)
             })
             .catch(err => { 
                 this.face = "https://i0.hdslb.com/bfs/face/member/noface.jpg"
             })
         } else {
-            if(first) setTimeout(() => this.face = this.uid2face[this.uid], 10)
-            else this.face = this.uid2face[this.uid]
+            if(first) setTimeout(() => this.face = face, 10)
+            else this.face = face
         }
     }
   }
