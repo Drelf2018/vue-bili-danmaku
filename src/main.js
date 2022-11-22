@@ -19,31 +19,4 @@ import App from './App.vue'
 import './index.css'
 import './assets/font/font.css'
 
-var app = createApp(App)
-
-function getUseSize() {
-    var size = 0;
-    for(var item in localStorage) {
-        if(localStorage.hasOwnProperty(item)) {
-            size += localStorage.getItem(item).length;
-        }
-    }
-    return (size / 1024).toFixed(2)
-}
-
-app.config.globalProperties.getFace = (uid) => {
-    var tf = localStorage.getItem(uid)
-    if(tf) {
-        var tt = tf.split(",")[0]
-        if(Date.parse(new Date()) / 1000 - tt < 86400) return tf.split(",")[1] + "@55w_55h.webp"
-    }
-    return null
-}
-
-app.config.globalProperties.setFace = (uid, face) => {
-    var tt = Date.parse(new Date()) / 1000
-    localStorage.setItem(uid, tt + "," + face)
-    console.log('已占用：' + getUseSize() + 'KB')
-}
-
-app.mount('#app')
+createApp(App).mount('#app')

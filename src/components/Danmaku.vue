@@ -14,27 +14,16 @@ export default {
   data() { return { face: null } },
   props: { uid: Number, sender: String, src: String },
   mounted() {
-    this.loadFace(true)
+    this.loadFace()
   },
   updated() {
-    this.loadFace(false)
+    this.loadFace()
   },
   methods: {
-    loadFace(first) {
-        var face = this.getFace(this.uid)
-        if (face == null) {
-            axios.get(`https://aliyun.nana7mi.link/user.User(uid=${this.uid}).get_user_info()`)
-            .then(res => {
-                this.face = res.data.data.face
-                this.setFace(this.uid, this.face)
-            })
-            .catch(err => { 
-                this.face = "https://i0.hdslb.com/bfs/face/member/noface.jpg"
-            })
-        } else {
-            if(first) setTimeout(() => this.face = face, 10)
-            else this.face = face
-        }
+    loadFace() {
+        axios.get(`https://aliyun.nana7mi.link/user.User(${this.uid}).get_user_info().face?max_age=86400`)
+        .then(res => { this.face = res.data.data })
+        .catch(err => { this.face = "https://i0.hdslb.com/bfs/face/member/noface.jpg" })
     }
   }
 }

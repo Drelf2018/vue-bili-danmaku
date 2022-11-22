@@ -22,12 +22,8 @@ export default {
     },
     clear() {
       var alpha = document.getElementById("main").offsetHeight / window.innerHeight
-      if(alpha > 5) {
-        for(var i=0; i < (this.pos || 10); i++) this.dms.shift()
-        this.pos = null
-      } else if (alpha > 2.5) {
-        if(!this.pos) this.pos = this.dms.length 
-      }
+      if(alpha < 3) this.pos = this.dms.length
+      if(alpha > 5) for(var i=0; i < (this.pos || 10); i++) this.dms.shift()
     }
   },
   async mounted() {

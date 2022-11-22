@@ -1,17 +1,20 @@
 <template>
-    <div :style="'display: inline-block; margin-left: ' + (medal.guard_level ? '16.8px;' : '4.8px;')">
-        <div class="medal-box">
-            <img v-if="medal.guard_level" class="medal-flag"
-                :src="'https://i0.hdslb.com/bfs/activity-plat/static/20200716/1d0c5a1b042efb59f46d4ba1286c6727/icon-guard' + medal.guard_level + '.png@100w_100h_1c.webp'">
-            <div class="medal-true-love"
-                :style="'padding: 0.5em ' + (medal.guard_level ? '3px' : '4px') + ' 0.5em ' + (medal.guard_level ? '12px;' : '4px;') + 'border-color:' + int2rgb(medal.medal_color_border) + '; background-image: linear-gradient(90deg, ' + int2rgb(medal.medal_color_start) + ', ' + int2rgb(medal.medal_color_end) + ');'">
-                {{ medal.medal_name }}
-            </div>
-            <div class="medal-level" :style="'border-color:' + int2rgb(medal.medal_color_border) + '; color: rgb(6, 21, 76);'">
-                {{ medal.medal_level }}
+    <span>
+        <slot></slot>
+        <div :style="'display: inline-block; margin-left: ' + (medal.guard_level ? '16.8px;' : '4.8px;')">
+            <div class="medal-box">
+                <img v-if="medal.guard_level" class="medal-flag"
+                    :src="'https://i0.hdslb.com/bfs/activity-plat/static/20200716/1d0c5a1b042efb59f46d4ba1286c6727/icon-guard' + medal.guard_level + '.png@100w_100h_1c.webp'">
+                <div class="medal-true-love"
+                    :style="'padding: 0.5em ' + (medal.guard_level ? '3px' : '4px') + ' 0.5em ' + (medal.guard_level ? '12px;' : '4px;') + 'border-color:' + int2rgb(medal.medal_color_border) + '; background-image: linear-gradient(90deg, ' + int2rgb(medal.medal_color_start) + ', ' + int2rgb(medal.medal_color_end) + ');'">
+                    {{ medal.medal_name }}
+                </div>
+                <div class="medal-level" :style="'border-color:' + int2rgb(medal.medal_color_border) + '; color: rgb(6, 21, 76);'">
+                    {{ medal.medal_level }}
+                </div>
             </div>
         </div>
-    </div>
+    </span>
 </template>
 
 <script>

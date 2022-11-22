@@ -10,7 +10,7 @@
         " height="40" width="40" :src="avatar" />
       <div id="header-content" class="style-scope yt-live-chat-paid-message-renderer">
         <div id="header-content-primary-column" class="no-transition style-scope yt-live-chat-paid-message-renderer">
-          <span>{{ title }}<Medal :medal="medal"/></span>
+          <Medal :medal="medal">{{ title }}</Medal>
           <div id="purchase-amount" class="style-scope yt-live-chat-paid-message-renderer"
             style="font-size: 90%; transform-origin: left">
             <span>{{

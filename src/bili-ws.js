@@ -15,12 +15,12 @@ export async function onClickShow(roomid, dms) {
 }
 
 async function getRoomId(id) {
-    const res = await axios.get(`https://aliyun.nana7mi.link/live.LiveRoom(room_display_id=${id}).get_room_play_info()`);
+    const res = await axios.get(`https://aliyun.nana7mi.link/live.LiveRoom(${id}).get_room_play_info()`);
     return res.data;
 }
 
 async function getWebSocketHost(roomid) {
-    const res = await axios.get(`https://aliyun.nana7mi.link/live.LiveRoom(room_display_id=${roomid}).get_chat_conf()`);
+    const res = await axios.get(`https://aliyun.nana7mi.link/live.LiveRoom(${roomid}).get_chat_conf()`);
     return res.data;
 }
 
