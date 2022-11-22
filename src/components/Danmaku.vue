@@ -1,5 +1,5 @@
 <template>
-  <div :class="{'close': !face, 'dmk': true}">
+  <div class="dmk">
     <img class='face' :src="face" alt>
     <span :class="[sender, 'message']" :style="src ? 'padding: 0.6em' : ''">
       <slot v-if="!src"></slot>
@@ -11,37 +11,16 @@
 <script>
 export default {
   name: 'Danmaku',
-  data() { return { face: null } },
-  props: { uid: Number, sender: String, src: String },
-  mounted() {
-    this.loadFace()
-  },
-  updated() {
-    this.loadFace()
-  },
-  methods: {
-    loadFace() {
-        axios.get(`https://aliyun.nana7mi.link/user.User(${this.uid}).get_user_info().face?max_age=86400`)
-        .then(res => { this.face = res.data.data })
-        .catch(err => { this.face = "https://i0.hdslb.com/bfs/face/member/noface.jpg" })
-    }
-  }
+  props: { face: String, uid: Number, sender: String, src: String }
 }
 </script>
 
 <style>
-.close {
-    opacity: 0;
-    left: -3em !important;
-}
-
 .dmk {
     position: relative;
     display: flex;
     margin: 0.25em 0;
-    transition: all 0.49s;
     max-width: 100%;
-    left: 0;
 }
 
 .face {

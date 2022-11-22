@@ -97,6 +97,15 @@ function openSocket(url, room_id, owner, dms) {
     // WebSocket连接成功回调
     ws.onopen = function () {
         // console.log("WebSocket 已连接上");
+        dms.push({
+            cmd: "DANMU_MSG",
+            info: {
+                face: "/ico.png",
+                uid: -1,
+                sender: "default",
+                msg: "WebSocket 已连接上"
+            }
+        })
         ws.send(getCertification(JSON.stringify(json)).buffer);
         //心跳包的定时器
         timer = setInterval(function () {
@@ -126,6 +135,7 @@ function openSocket(url, room_id, owner, dms) {
                         dms.push({
                             cmd: element.cmd,
                             info: {
+                                face: null,
                                 uid: element.info[2][0],
                                 sender: element.info[2][0] == owner ? "self" : element.info[2][2] == 1 ? "owner" : element.info[2][7] == "" ? "default" : "guard",
                                 msg: element.info[1],

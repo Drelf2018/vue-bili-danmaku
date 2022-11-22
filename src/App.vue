@@ -12,7 +12,7 @@ import { onClickShow } from './bili-ws'
 export default {
   name: 'App',
   components: { Message },
-  data() { return { dms: [], pos: null } },
+  data() { return { dms: [], pos: null, first: 1 } },
   methods: {
     getQueryString(name, def) {
       var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
@@ -23,7 +23,10 @@ export default {
     clear() {
       var alpha = document.getElementById("main").offsetHeight / window.innerHeight
       if(alpha < 3) this.pos = this.dms.length
-      if(alpha > 5) for(var i=0; i < (this.pos || 10); i++) this.dms.shift()
+      if(alpha > 5) {
+        if(!this.first) for(var i=0; i < (this.pos || 10); i++) this.dms.shift()
+        this.first ^= 1
+      }
     }
   },
   async mounted() {

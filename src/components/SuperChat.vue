@@ -1,5 +1,5 @@
 <template>
-  <div id="card" class="style-scope yt-live-chat-paid-message-renderer" :style="'font-size: 1.4em;' + close">
+  <div id="card" class="style-scope yt-live-chat-paid-message-renderer" :style="'font-size: 1.4em;'">
     <div id="header" class="style-scope yt-live-chat-paid-message-renderer" :style="'background-color:' + headercolor">
       <img id="author-photo" referrerpolicy="no-referer" rel="no-referer" class="
           style-scope
@@ -112,16 +112,6 @@ export default {
         B.toString(16).length === 1 ? '0' + B.toString(16) : B.toString(16)
       return '#' + RR + GG + BB
     }
-  },
-  data() {
-    return {
-      close: "opacity: 0;left: -3em;"
-    }
-  },
-  mounted() {
-    setTimeout(() => {
-      this.close = "opacity: 1;left: 0;"
-    }, 10)
   }
 }
 </script>
