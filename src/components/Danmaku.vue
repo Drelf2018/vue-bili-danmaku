@@ -19,7 +19,6 @@ export default {
 .dmk {
     position: relative;
     display: flex;
-    margin: 0.25em 0;
     max-width: 100%;
 }
 

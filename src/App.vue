@@ -30,7 +30,7 @@ export default {
     }
   },
   async mounted() {
-    await onClickShow(this.getQueryString("roomid", 21452505), this.dms)
+    await onClickShow(this.getQueryString("roomid", 21452505), this.dms, this.getQueryString("price", 9.9))
     document.getElementById("app").style.zoom = this.getQueryString("zoom", 1)
     setInterval(this.clear, 500)
   }

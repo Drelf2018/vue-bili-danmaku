@@ -119,7 +119,6 @@ export default {
 <style>
 #card.yt-live-chat-paid-message-renderer {
   position: relative;
-  margin: 0.25em 0;
   border-radius: 4px;
   display: flex;
   transition: all 0.49s;

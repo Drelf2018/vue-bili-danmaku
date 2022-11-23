@@ -1,38 +1,52 @@
 <template>
-  <Danmaku
-    v-if="dm.cmd == 'DANMU_MSG'"
-    :class="close ? 'close' : 'open'"
-    :face="dm.info.face"
-    :uid="dm.info.uid"
-    :sender="dm.info.sender"
-    :src="dm.info.src"
-    style="transition: all 0.4s ease 0.05s;">
-    {{ dm.info.msg }}
-  </Danmaku>
+  <div :class="[close ? 'close' : 'open', 'outer']">
+    <Danmaku
+      v-if="dm.cmd == 'DANMU_MSG'"
+      :face="dm.info.face"
+      :uid="dm.info.uid"
+      :sender="dm.info.sender"
+      :src="dm.info.src">
+      {{ dm.info.msg }}
+    </Danmaku>
 
-  <SuperChat
-    v-if="dm.cmd == 'SUPER_CHAT_MESSAGE'"
-    :class="close ? 'close' : 'open'"
-    :title="dm.info.user_info.uname"
-    :medal="dm.info.medal_info"
-    :price="Number(dm.info.price)"
-    :message="dm.info.message"
-    :avatar="dm.info.user_info.face"
-    :uid="dm.info.uid"
-    :contentcolor="dm.info.background_color_end"
-    :headercolor="dm.info.background_price_color"
-    :hiderate="true"
-    :ts="dm.info.ts"
-    style="transition: all 0.4s ease 0.05s;" />
+    <SuperChat
+      v-if="dm.cmd == 'SUPER_CHAT_MESSAGE'"
+      :title="dm.info.user_info.uname"
+      :medal="dm.info.medal_info"
+      :price="Number(dm.info.price)"
+      :message="dm.info.message"
+      :avatar="dm.info.user_info.face"
+      :uid="dm.info.uid"
+      :contentcolor="dm.info.background_color_end"
+      :headercolor="dm.info.background_price_color"
+      :hiderate="true"
+      :ts="dm.info.ts"/>
+
+    <SuperChat
+      v-if="dm.cmd == 'SEND_GIFT'"
+      :title="dm.info.uname"
+      :medal="dm.info.medal_info"
+      :price="Number(dm.info.price/1000)"
+      :message="dm.info.action + ' ' + dm.info.giftName"
+      :avatar="dm.info.face"
+      :uid="dm.info.uid"
+      :contentcolor="dm.info.background_color_end"
+      :headercolor="dm.info.background_price_color"
+      :hiderate="true"
+      :ts="dm.info.timestamp"/>
+
+    <Guard v-if="dm.cmd == 'GUARD_BUY'" :gift="dm.info.gift_name" :username="dm.info.username" />
+  </div>
 </template>
 
 <script>
 import Danmaku from './Danmaku.vue'
 import SuperChat from './SuperChat.vue'
+import Guard from './Guard.vue'
 
 export default {
   name: 'Message',
-  components: { Danmaku, SuperChat },
+  components: { Danmaku, SuperChat, Guard },
   data() { return { close: true } },
   props: { dm: Object },
   mounted() {
@@ -51,6 +65,12 @@ export default {
 </script>
 
 <style>
+.outer {
+  margin: 0.25em 0;
+  position: relative;
+  transition: all 0.4s ease 0.05s;
+}
+
 .close {
   opacity: 0;
   left: -3em;

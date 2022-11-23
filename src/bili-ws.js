@@ -1,6 +1,6 @@
 import pako from "pako";
 
-export async function onClickShow(roomid, dms) {
+export async function onClickShow(roomid, dms, min_price) {
     const roomData = await getRoomId(roomid);
     if (roomData.code) {
         alert("房间号错误");
@@ -11,7 +11,7 @@ export async function onClickShow(roomid, dms) {
         alert("房间号错误");
         return;
     }
-    openSocket(socketData.data.host, roomData.data.room_id, roomData.data.uid, dms);
+    openSocket(socketData.data.host, roomData.data.room_id, roomData.data.uid, dms, min_price);
 }
 
 async function getRoomId(id) {
@@ -84,7 +84,7 @@ function decode(blob, call) {
     };
     reader.readAsArrayBuffer(blob);
 }
-function openSocket(url, room_id, owner, dms) {
+function openSocket(url, room_id, owner, dms, min_price) {
     let timer = null;
     let ws = new WebSocket(`wss://${url}/sub`);
     let json = {
@@ -131,7 +131,7 @@ function openSocket(url, room_id, owner, dms) {
                 //会同时有多个 数发过来 所以要循环
                 for (let i = 0; i < packet.body.length; i++) {
                     var element = packet.body[i];
-                    if (element.cmd == "DANMU_MSG") {
+                    if(element.cmd == "DANMU_MSG") {
                         dms.push({
                             cmd: element.cmd,
                             info: {
@@ -142,7 +142,12 @@ function openSocket(url, room_id, owner, dms) {
                                 src: element.info[0][13].url
                             }
                         })
-                    } else if (element.cmd == "SUPER_CHAT_MESSAGE") {
+                    } else if(element.cmd == "SUPER_CHAT_MESSAGE" || element.cmd == "GUARD_BUY") {
+                        dms.push({
+                            cmd: element.cmd,
+                            info: element.data
+                        })
+                    } else if(element.cmd == "SEND_GIFT" && element.data.price / 1000 > min_price) {
                         dms.push({
                             cmd: element.cmd,
                             info: element.data
