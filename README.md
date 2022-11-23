@@ -10,7 +10,9 @@ _✨ 基于 [Vue3](https://github.com/vuejs/core) 的仿七海弹幕姬 ✨_
 
 ## 演示
 
-![](https://i0.hdslb.com/bfs/new_dyn/e449c93390a57fa7c04a1d8c4b709fef188888131.gif)
+[看不见点我](https://user-images.githubusercontent.com/41439182/203388574-5cc51496-1613-4d19-a787-55360c3ab18e.gif)
+
+![e449c93390a57fa7c04a1d8c4b709fef188888131](https://user-images.githubusercontent.com/41439182/203388574-5cc51496-1613-4d19-a787-55360c3ab18e.gif)
 
 ## 使用方法
 
