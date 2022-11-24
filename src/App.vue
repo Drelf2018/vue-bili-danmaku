@@ -1,17 +1,19 @@
 <template>
-  <div id="main">
+  <div v-if="roomid" id="main">
     <Message v-for="dm in dms" :dm="dm" />
   </div>
+  <Hello v-if="!roomid" />
 </template>
 
 <script>
 import Message from './components/Message.vue';
-import { onClickShow } from './bili-ws'
+import Hello from './components/Hello.vue';
+import { onClickShow } from './bili-ws';
 
 export default {
   name: 'App',
-  components: { Message },
-  data() { return { dms: [], pos: null, first: 1 } },
+  components: { Message, Hello },
+  data() { return { dms: [], pos: null, first: 1, roomid: this.getQueryString("roomid") } },
   methods: {
     getQueryString(name, def) {
       var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i');
@@ -29,7 +31,8 @@ export default {
     }
   },
   async mounted() {
-    await onClickShow(this.getQueryString("roomid", 21452505), this.dms, this.getQueryString("price", 9.9))
+    if(!this.roomid) return
+    await onClickShow(this.roomid, this.dms, this.getQueryString("price", 9.9))
     document.getElementById("app").style.zoom = this.getQueryString("zoom", 1)
     setInterval(this.clear, 500)
   },

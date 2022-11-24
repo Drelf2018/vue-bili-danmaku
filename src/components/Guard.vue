@@ -14,6 +14,8 @@ export default {
 
 <style>
 .toast {
+    margin-top: 12px;
+    margin-bottom: 0.5em;
     background-color: rgb(55, 54, 52);
     border: 10px solid rgb(12, 155, 85);
     border-radius: 1em;

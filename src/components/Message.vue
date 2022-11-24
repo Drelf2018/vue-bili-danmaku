@@ -15,7 +15,7 @@
       :medal="dm.info.medal_info"
       :price="Number(dm.info.price)"
       :message="dm.info.message"
-      :avatar="dm.info.user_info.face"
+      :avatar="dm.info.face"
       :uid="dm.info.uid"
       :contentcolor="dm.info.background_color_end"
       :headercolor="dm.info.background_price_color"
@@ -50,7 +50,8 @@ export default {
   data() { return { close: true } },
   props: { dm: Object },
   mounted() {
-    if(this.dm.cmd == 'DANMU_MSG' || this.dm.cmd == 'GUARD_BUY') this.loadFace(this.dm.info.uid)
+    //if(this.dm.cmd == 'DANMU_MSG' || this.dm.cmd == 'GUARD_BUY') 
+    this.loadFace(this.dm.info.uid)
     setTimeout(()=>this.close = false, 50)
   },
   methods: {
