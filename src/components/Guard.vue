@@ -1,17 +1,14 @@
 <template>
     <div class="toast">
-        <img class='face' src="https://i0.hdslb.com/bfs/face/member/noface.jpg" style="float: left;margin-left: 0.35em;">
-        <span style="font-size: 1.45em;font-weight: bold;color: rgb(245, 245, 247)">
-            新{{ gift }}！<br />
-            欢迎 {{ username }}
-        </span>
+        <img class='face' :src="face" style="float: left;margin-left: 0.35em;">
+        <span style="font-size: 1.45em;font-weight: bold;color: rgb(245, 245, 247)" v-html="msg"></span>
     </div>
 </template>
 
 <script>
 export default {
     name: 'Guard',
-    props: { gift: String, username: String }
+    props: { msg: String, face: String }
 }
 </script>
 

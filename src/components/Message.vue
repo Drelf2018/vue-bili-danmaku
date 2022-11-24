@@ -35,7 +35,7 @@
       :hiderate="true"
       :ts="dm.info.timestamp"/>
 
-    <Guard v-if="dm.cmd == 'GUARD_BUY'" :gift="dm.info.gift_name" :username="dm.info.username" />
+    <Guard v-if="dm.cmd == 'GUARD_BUY'" :msg="dm.info.msg" :face="dm.info.face"/>
   </div>
 </template>
 
@@ -50,7 +50,7 @@ export default {
   data() { return { close: true } },
   props: { dm: Object },
   mounted() {
-    if(this.dm.cmd == 'DANMU_MSG') this.loadFace(this.dm.info.uid)
+    if(this.dm.cmd == 'DANMU_MSG' || this.dm.cmd == 'GUARD_BUY') this.loadFace(this.dm.info.uid)
     setTimeout(()=>this.close = false, 50)
   },
   methods: {

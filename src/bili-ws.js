@@ -142,17 +142,36 @@ function openSocket(url, room_id, owner, dms, min_price) {
                                 src: element.info[0][13].url
                             }
                         })
-                    } else if(element.cmd == "SUPER_CHAT_MESSAGE" || element.cmd == "GUARD_BUY") {
+                    } else if(element.cmd == "SUPER_CHAT_MESSAGE") {
                         dms.push({
                             cmd: element.cmd,
                             info: element.data
+                        })
+                    } else if(element.cmd == "GUARD_BUY") {
+                        dms.push({
+                            cmd: element.cmd,
+                            info: {
+                                msg: `新${ element.data.gift_name }！<br />欢迎 ${ element.data.username }`,
+                                uid: element.data.uid
+                            }
                         })
                     } else if(element.cmd == "SEND_GIFT" && element.data.price / 1000 > min_price) {
                         dms.push({
                             cmd: element.cmd,
                             info: element.data
                         })
-                    }
+                    } 
+                    // else if(element.cmd == "INTERACT_WORD") {
+                    //     dms.push({
+                    //         cmd: "DANMU_MSG",
+                    //         info: {
+                    //             face: "/ico.png",
+                    //             uid: -1,
+                    //             sender: "default",
+                    //             msg: element.data.uname + " 进入直播间"
+                    //         }
+                    //     })
+                    // }
                 }
             }
         });

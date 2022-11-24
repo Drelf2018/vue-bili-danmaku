@@ -1,5 +1,4 @@
 <template>
-  <title>Vue-Bili-Danmaku: {{ dms.length }}</title>
   <div id="main">
     <Message v-for="dm in dms" :dm="dm" />
   </div>
@@ -33,7 +32,8 @@ export default {
     await onClickShow(this.getQueryString("roomid", 21452505), this.dms, this.getQueryString("price", 9.9))
     document.getElementById("app").style.zoom = this.getQueryString("zoom", 1)
     setInterval(this.clear, 500)
-  }
+  },
+  watch: { "dms.length": function(val) { document.title = "Vue-Bili-Danmaku: " + val } }
 }
 </script>
 
