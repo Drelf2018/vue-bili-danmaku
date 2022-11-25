@@ -47,5 +47,6 @@ export default {
   flex-direction: column;
   bottom: 0px;
   width: calc(100% - 16px);
+  margin: 0 8px;
 }
 </style>

@@ -249,12 +249,6 @@ body {
   scroll-behavior: smooth;
 }
 
-body {
-  margin: 0;
-  /* overflow-y: hidden; */
-  /* overflow-x: hidden; */
-}
-
 html:not(.style-scope) {
   --yt-live-chat-background-color: hsl(0, 0%, 100%);
   --yt-live-chat-action-panel-background-color: hsla(0, 0%, 93.3%, 0.4);

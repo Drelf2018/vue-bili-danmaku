@@ -1,8 +1,10 @@
 <template>
-  <div class="hello">
-    <Message v-for="dm in dms" :dm="dm" />
+  <div style="background: url('/sky.jpg') 0/cover no-repeat fixed;height: 100vh">
+    <div id="hello">
+      <Message v-for="dm in dms" :dm="dm" />
+    </div>
   </div>
-  
+  <span id="test">我 测<br>你 码</span>
 </template>
 
 <script>
@@ -88,22 +90,54 @@ export default {
         {
           cmd: "GUARD_BUY",
           info: {
-              msg: `新舰长！<br />欢迎 七海Nana7mi`,
-              uid: 434334701
+            msg: `新舰长！<br />欢迎 七海Nana7mi`,
+            uid: 434334701
           }
         },
       ]
     }
+  },
+  mounted() {
+    var hello = document.getElementById("hello")
+    hello.style.top = `calc(50vh - ${hello.offsetHeight / 2}px)`
+    if(0.5*window.innerWidth > 416) setTimeout(() => hello.style.left = "200px", 1)
+    var test = document.getElementById("test")
+    test.style.top = `calc(50vh - ${test.offsetHeight / 2}px)`
+    setTimeout(() => test.style.opacity = "1", 1)
   }
 }
 </script>
 
 <style>
-.hello {
+#hello {
+  position: relative;
   width: 400px;
   border-radius: 20px;
-  border: 2px solid grey;
+  transition: all 0.75s ease 0.75s;
   padding: 1em;
-  margin: auto;
+  left: calc(50vw - 200px - 1em);
+  box-shadow: 0 .5em 1em rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+
+#hello::before {
+  content: "";
+  position: absolute;
+  width: calc(100% + 2em);
+  height: calc(100% + 2em);
+  top: -1em;
+  left: -1em;
+  box-shadow: 0 0 0 232px rgba(255, 255, 255, 0.2) inset;
+  background: url("/sky.jpg") 0px center / cover no-repeat fixed;
+  filter: blur(7px);
+}
+
+#test {
+  position: absolute;
+  font-size: 200px;
+  right: 200px;
+  color: white;
+  transition: all 0.5s ease 1.5s;
+  opacity: 0;
 }
 </style>
