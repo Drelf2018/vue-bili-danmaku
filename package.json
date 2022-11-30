@@ -8,7 +8,8 @@
   "dependencies": {
     "pako": "^2.0.4",
     "qs": "^6.11.0",
-    "vue": "^3.0.4"
+    "vue": "^3.0.4",
+    "vue-router": "^4.1.6"
   },
   "devDependencies": {
     "vite": "^1.0.0-rc.13",

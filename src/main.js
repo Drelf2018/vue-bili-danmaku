@@ -18,17 +18,17 @@ import './index.css'
 import './assets/font/font.css'
 import App from './App.vue'
 import { createApp } from 'vue'
-// import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 
-// const router = createRouter({
-//     history: createWebHistory(),
-//     routes: [
-//         { path: '/', component: import('./components/Hello.vue') },
-//         { path: '/:roomid', component: import('./components/Show.vue') },
-//     ]
-// })
+const router = createRouter({
+    history: createWebHistory(),
+    routes: [
+        { path: '/', component: import('./components/Hello.vue') },
+        { path: '/:roomid', component: import('./components/Show.vue') },
+    ]
+})
 
 var app = createApp(App)
-// app.config.globalProperties.redirect = path => router.push(path)
-// app.use(router)
+app.config.globalProperties.redirect = path => router.push(path)
+app.use(router)
 app.mount('#app')
