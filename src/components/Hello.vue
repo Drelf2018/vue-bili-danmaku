@@ -98,7 +98,7 @@ export default {
     }
   },
   mounted() {
-    if(this.$route.query.roomid) this.redirect(`redirect/?roomid=${this.$route.query.roomid}`)
+    // if(this.$route.query.roomid) this.redirect(`redirect/?roomid=${this.$route.query.roomid}`)
     var hello = document.getElementById("hello")
     hello.style.top = `calc(50vh - ${hello.offsetHeight / 2}px)`
     if(0.5*window.innerWidth > 416) setTimeout(() => hello.style.left = "200px", 1)
