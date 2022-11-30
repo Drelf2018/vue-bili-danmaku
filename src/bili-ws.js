@@ -14,6 +14,18 @@ export async function onClickShow(roomid, dms, min_price) {
     openSocket(socketData.data.host, roomData.data.room_id, roomData.data.uid, dms, min_price);
 }
 
+export function makeDanmaku(msg) {
+    return {
+        cmd: "DANMU_MSG",
+        info: {
+            face: "/ico.png",
+            uid: -1,
+            sender: "default",
+            msg: msg
+        }
+    }
+}
+
 async function getRoomId(id) {
     const res = await axios.get(`https://aliyun.nana7mi.link/live.LiveRoom(${id}).get_room_play_info()`);
     return res.data;
@@ -84,6 +96,7 @@ function decode(blob, call) {
     };
     reader.readAsArrayBuffer(blob);
 }
+
 function openSocket(url, room_id, owner, dms, min_price) {
     let timer = null;
     let ws = new WebSocket(`wss://${url}/sub`);
@@ -96,16 +109,7 @@ function openSocket(url, room_id, owner, dms, min_price) {
     };
     // WebSocket连接成功回调
     ws.onopen = function () {
-        // console.log("WebSocket 已连接上");
-        dms.push({
-            cmd: "DANMU_MSG",
-            info: {
-                face: "/ico.png",
-                uid: -1,
-                sender: "default",
-                msg: "WebSocket 已连接上"
-            }
-        })
+        dms.push(makeDanmaku("WebSocket 已连接上"))
         ws.send(getCertification(JSON.stringify(json)).buffer);
         //心跳包的定时器
         timer = setInterval(function () {
@@ -131,9 +135,11 @@ function openSocket(url, room_id, owner, dms, min_price) {
                 //会同时有多个 数发过来 所以要循环
                 for (let i = 0; i < packet.body.length; i++) {
                     var element = packet.body[i];
-                    if(element.cmd == "DANMU_MSG") {
+                    console.log(element);
+                    if(!element.cmd) return;
+                    else if(element.cmd.startsWith("DANMU_MSG")) {
                         dms.push({
-                            cmd: element.cmd,
+                            cmd: "DANMU_MSG",
                             info: {
                                 face: null,
                                 uid: element.info[2][0],
@@ -151,7 +157,7 @@ function openSocket(url, room_id, owner, dms, min_price) {
                         dms.push({
                             cmd: element.cmd,
                             info: {
-                                msg: `新${ element.data.gift_name }！<br />欢迎 ${ element.data.username }`,
+                                msg: `新${ element.data.gift_name }！<br />欢迎 ${ element.data.username }！`,
                                 uid: element.data.uid
                             }
                         })

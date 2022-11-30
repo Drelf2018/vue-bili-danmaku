@@ -1,5 +1,5 @@
 <template>
-  <div style="background: url('/sky.jpg') 0/cover no-repeat fixed;height: 100vh">
+  <div style="background: url('/sky.jpg') 0/cover no-repeat fixed;height: 100vh;filter: grayscale(0.8);">
     <div id="hello">
       <Message v-for="dm in dms" :dm="dm" />
     </div>
@@ -98,6 +98,7 @@ export default {
     }
   },
   mounted() {
+    if(this.$route.query.roomid) this.redirect(`redirect/?roomid=${this.$route.query.roomid}`)
     var hello = document.getElementById("hello")
     hello.style.top = `calc(50vh - ${hello.offsetHeight / 2}px)`
     if(0.5*window.innerWidth > 416) setTimeout(() => hello.style.left = "200px", 1)
