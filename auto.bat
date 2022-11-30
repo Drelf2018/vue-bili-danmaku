@@ -1,6 +1,7 @@
 cd dist
 move .\\_assets\\* .
 rmdir /Q _assets
+copy index.html 404.html
 
 git init
 git add -A

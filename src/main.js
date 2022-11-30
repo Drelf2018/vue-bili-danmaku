@@ -17,14 +17,16 @@ Date.prototype.Format = function(fmt) {
 import './index.css'
 import './assets/font/font.css'
 import App from './App.vue'
+import Hello from './components/Hello.vue'
+import Show from './components/Show.vue'
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        { path: '/', component: import('./components/Hello.vue') },
-        { path: '/:roomid', component: import('./components/Show.vue') },
+        { path: '/', component: Hello },
+        { path: '/:roomid', component: Show },
     ]
 })
 

@@ -135,7 +135,6 @@ function openSocket(url, room_id, owner, dms, min_price) {
                 //会同时有多个 数发过来 所以要循环
                 for (let i = 0; i < packet.body.length; i++) {
                     var element = packet.body[i];
-                    console.log(element);
                     if(!element.cmd) return;
                     else if(element.cmd.startsWith("DANMU_MSG")) {
                         dms.push({
