@@ -68,6 +68,7 @@ export default {
     margin-left: calc(var(--border-size) + 1px);
     background-color: var(--color-bg);
     border: 2px solid var(--color-border);
+    word-break:break-all;
 }
 
 .message:after, .message:before {

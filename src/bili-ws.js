@@ -167,15 +167,7 @@ function openSocket(url, room_id, owner, dms, min_price) {
                         })
                     } 
                     // else if(element.cmd == "INTERACT_WORD") {
-                    //     dms.push({
-                    //         cmd: "DANMU_MSG",
-                    //         info: {
-                    //             face: "/ico.png",
-                    //             uid: -1,
-                    //             sender: "default",
-                    //             msg: element.data.uname + " 进入直播间"
-                    //         }
-                    //     })
+                    //     dms.push(makeDanmaku(element.data.uname + " 进入直播间"))
                     // }
                 }
             }

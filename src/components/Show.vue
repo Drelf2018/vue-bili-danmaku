@@ -27,7 +27,7 @@ export default {
         if(roomid == "redirect") {
             roomid = this.$route.query.roomid || 21452505
             this.dms.push(makeDanmaku("弹幕姬网址已更换"))
-            this.dms.push(makeDanmaku(`danmu.nana7mi.link/${roomid}`))
+            this.dms.push(makeDanmaku(`https://danmu.nana7mi.link/${roomid}`))
         }
         await onClickShow(roomid, this.dms, this.$route.query.price || 9.9)
         document.getElementById("app").style.zoom = this.$route.query.zoom || 1

@@ -1,10 +1,23 @@
 <template>
-  <div style="background: url('/sky.jpg') 0/cover no-repeat fixed;height: 100vh;filter: grayscale(0.8);">
-    <div id="hello">
-      <Message v-for="dm in dms" :dm="dm" />
+  <div id="container">
+    <div id="box" class="glass">
+      <div id="hello">
+        <Message v-for="dm in dms" :dm="dm" />
+      </div>
+      <div id="edit">
+        <span style="font-size: 175px;">
+          我 测<br>
+          你 码<br>
+          我 测<br>
+          你 码<br>
+          我 测<br>
+          你 码<br>
+          我 测<br>
+          你 码
+        </span>
+      </div>
     </div>
   </div>
-  <span id="test">我 测<br>你 码</span>
 </template>
 
 <script>
@@ -90,7 +103,7 @@ export default {
         {
           cmd: "GUARD_BUY",
           info: {
-            msg: `新舰长！<br />欢迎 七海Nana7mi`,
+            msg: `新舰长！<br />欢迎 七海Nana7mi！`,
             uid: 434334701
           }
         },
@@ -99,46 +112,70 @@ export default {
   },
   mounted() {
     if(this.$route.query.roomid) this.redirect(`redirect/?roomid=${this.$route.query.roomid}`)
-    var hello = document.getElementById("hello")
-    hello.style.top = `calc(50vh - ${hello.offsetHeight / 2}px)`
-    if(0.5*window.innerWidth > 416) setTimeout(() => hello.style.left = "200px", 1)
-    var test = document.getElementById("test")
-    test.style.top = `calc(50vh - ${test.offsetHeight / 2}px)`
-    setTimeout(() => test.style.opacity = "1", 1)
+    document.getElementById("box").style = `--height: ${document.getElementById("hello").offsetHeight}px`
+    setTimeout(() => document.getElementById("edit").style.opacity = "1", 1)
   }
 }
 </script>
 
 <style>
-#hello {
-  position: relative;
-  width: 400px;
-  border-radius: 20px;
-  transition: all 0.75s ease 0.75s;
-  padding: 1em;
-  left: calc(50vw - 200px - 1em);
-  box-shadow: 0 .5em 1em rgba(0, 0, 0, 0.6);
-  overflow: hidden;
+#container {
+  padding: 16px 0;
+  min-height: calc(100vh - 32px);
+  background: url("/sky.jpg") 0px center / cover no-repeat fixed;
+  filter: grayscale(0.95);
 }
 
-#hello::before {
+.glass {
+  position: relative;
+  border-radius: 20px;
+  padding: 1em;
+  box-shadow: 0 .5em 1em rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  z-index: 2;
+}
+
+.glass::before {
   content: "";
   position: absolute;
   width: calc(100% + 2em);
   height: calc(100% + 2em);
   top: -1em;
   left: -1em;
-  box-shadow: 0 0 0 232px rgba(255, 255, 255, 0.2) inset;
   background: url("/sky.jpg") 0px center / cover no-repeat fixed;
-  filter: blur(7px);
+  box-shadow: 0 0 0 448px rgba(255, 255, 255, 0.2) inset;
+  filter: blur(5px);
+  z-index: -1;
 }
 
-#test {
-  position: absolute;
-  font-size: 200px;
-  right: 200px;
+#hello {
+  width: 400px;
+  left: calc(50vw - 200px - 1em);
+  height: max-content;
+}
+
+#box {
+  width: 832px;
+  height: var(--height);
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
+}
+
+@media screen and (max-width: 816px) {
+  #box {
+    width: 400px;
+    flex-direction: column;
+    height: max-content;
+  }
+}
+
+#edit {
+  width: 400px;
+  position: relative;
   color: white;
-  transition: all 0.5s ease 1.5s;
+  transition: all 1s;
+  overflow: scroll;
   opacity: 0;
 }
 </style>
