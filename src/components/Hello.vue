@@ -1,11 +1,15 @@
 <template>
   <div id="container">
     <div id="box" class="glass">
+      <div v-drag id="title">
+        <span><strong>自定义配置</strong></span>
+      </div>
       <div id="hello">
         <Message v-for="dm in dms" :dm="dm" />
       </div>
+      <div style="width:2px; height:100%; background-color: rgba(255,255,255,0.6);"></div>
       <div id="edit">
-        <span style="font-size: 175px;">
+        <span style="font-size: 150px;">
           我 测<br>
           你 码<br>
           我 测<br>
@@ -112,8 +116,7 @@ export default {
   },
   mounted() {
     if(this.$route.query.roomid) this.redirect(`redirect/?roomid=${this.$route.query.roomid}`)
-    document.getElementById("box").style = `--height: ${document.getElementById("hello").offsetHeight}px`
-    setTimeout(() => document.getElementById("edit").style.opacity = "1", 1)
+    document.getElementById("box").style.height = `${document.getElementById("hello").offsetHeight}px`
   }
 }
 </script>
@@ -121,15 +124,17 @@ export default {
 <style>
 #container {
   padding: 16px 0;
+  /* height: calc(100% + 32px); */
   min-height: calc(100vh - 32px);
   background: url("/sky.jpg") 0px center / cover no-repeat fixed;
   filter: grayscale(0.95);
+  overflow-y: hidden;
 }
 
 .glass {
   position: relative;
   border-radius: 20px;
-  padding: 1em;
+  padding: 3em 1em 1em;
   box-shadow: 0 .5em 1em rgba(0, 0, 0, 0.6);
   overflow: hidden;
   z-index: 2;
@@ -148,6 +153,20 @@ export default {
   z-index: -1;
 }
 
+#title {
+  position: absolute;
+  width: 100%;
+  height: 32px;
+  font-size: 1.4em;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgb(10,12,25);
+  background-color: rgba(255,255,255,0.4);
+}
+
 #hello {
   width: 400px;
   left: calc(50vw - 200px - 1em);
@@ -156,17 +175,20 @@ export default {
 
 #box {
   width: 832px;
-  height: var(--height);
   display: flex;
   justify-content: space-between;
-  margin: auto;
+  left: calc(50% - 432px);
+  position: relative;
+  --move:1;
 }
 
 @media screen and (max-width: 816px) {
   #box {
     width: 400px;
+    left: calc(50% - 216px);
     flex-direction: column;
-    height: max-content;
+    height: auto !important;
+    --move:0;
   }
 }
 
@@ -175,7 +197,12 @@ export default {
   position: relative;
   color: white;
   transition: all 1s;
-  overflow: scroll;
-  opacity: 0;
+  overflow-y: auto;
+  animation: op 1s;
+}
+
+@keyframes op {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 </style>
