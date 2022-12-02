@@ -1,6 +1,6 @@
 <template>
   <div id="container">
-    <div id="box" class="glass">
+    <div id="box" class="glass" :style="'zoom: '+resize">
       <div v-drag id="title">
         <span><strong>自定义配置</strong></span>
       </div>
@@ -117,6 +117,12 @@ export default {
   mounted() {
     if(this.$route.query.roomid) this.redirect(`redirect/?roomid=${this.$route.query.roomid}`)
     document.getElementById("box").style.height = `${document.getElementById("hello").offsetHeight}px`
+  },
+  computed: {
+    resize() {
+      if(0.8*window.innerWidth < 432) return 0.8*window.innerWidth / 432
+      else return 1
+    }
   }
 }
 </script>
@@ -124,11 +130,10 @@ export default {
 <style>
 #container {
   padding: 16px 0;
-  /* height: calc(100% + 32px); */
   min-height: calc(100vh - 32px);
   background: url("/sky.jpg") 0px center / cover no-repeat fixed;
   filter: grayscale(0.95);
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 .glass {
@@ -188,6 +193,7 @@ export default {
     left: calc(50% - 216px);
     flex-direction: column;
     height: auto !important;
+    zoom: calc(80vw / 400);
     --move:0;
   }
 }
