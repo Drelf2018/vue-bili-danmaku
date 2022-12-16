@@ -1,4 +1,5 @@
 <template>
+    <span v-if="$route.query.debug" style="position: absolute;right: 0.5em;color: grey">{{ alpha }}</span>
     <div id="main-container">
         <div id="main">
             <Message v-for="dm in dms" :dm="dm" />
@@ -13,7 +14,7 @@ import { onClickShow, makeDanmaku } from '../bili-ws';
 export default {
     name: 'Show',
     components: { Message },
-    data() { return { dms: [], pos: null } },
+    data() { return { dms: [], pos: null, alpha: 0 } },
     async mounted() {
         var roomid = this.$route.params.roomid
         var main = document.getElementById("main")
@@ -24,14 +25,14 @@ export default {
         }
         await onClickShow(roomid, this.dms, this.$route.query.price || 9.9)
         document.getElementById("app").style.zoom = this.$route.query.zoom || 1
-        setInterval(() => main.lastElementChild.scrollIntoView({behavior: "smooth", block: "end"}), 500)
+        setInterval(() => main.lastElementChild.scrollIntoView({behavior: "smooth", block: "end"}), 300)
     },
     watch: { "dms.length": function (val, old) { 
         document.title = "Vue-Bili-Danmaku: " + val
         if(val > old) setTimeout(() => {
-            var alpha = main.offsetHeight / window.innerHeight
-            if(alpha < 3) this.pos = this.dms.length
-            if(alpha > 5) for(var i = 0; i < (this.pos || 10); i++) this.dms.shift()
+            this.alpha = main.offsetHeight / window.innerHeight
+            if(this.alpha < 3) this.pos = this.dms.length
+            if(this.alpha > 5) for(var i = 0; i < (this.pos || 10); i++) this.dms.shift()
         }, 500)
     } }
 }

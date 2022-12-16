@@ -70,7 +70,7 @@ export default {
   margin-top: calc(0.25em - 1px);
   margin-bottom: 1px;
   position: relative;
-  transition: all 0.4s ease 0.1s;
+  transition: all 0.4s ease 0.2s;
 }
 
 .close {
