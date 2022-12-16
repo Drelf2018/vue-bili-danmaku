@@ -132,7 +132,7 @@ export default {
   padding: 16px 0;
   min-height: calc(100vh - 32px);
   background: url("/sky.jpg") 0px center / cover no-repeat fixed;
-  filter: grayscale(0.95);
+  /* filter: grayscale(0.95); */
   overflow: hidden;
 }
 

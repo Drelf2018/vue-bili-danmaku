@@ -1,6 +1,8 @@
 <template>
-    <div id="main">
-        <Message v-for="dm in dms" :dm="dm" />
+    <div id="main-container">
+        <div id="main">
+            <Message v-for="dm in dms" :dm="dm" />
+        </div>
     </div>
 </template>
   
@@ -11,39 +13,42 @@ import { onClickShow, makeDanmaku } from '../bili-ws';
 export default {
     name: 'Show',
     components: { Message },
-    data() { return { dms: [], pos: null, first: 1 } },
-    methods: {
-        clear() {
-            var alpha = document.getElementById("main").offsetHeight / window.innerHeight
-            if (alpha < 3) this.pos = this.dms.length
-            if (alpha > 5) {
-                if (!this.first) for (var i = 0; i < (this.pos || 10); i++) this.dms.shift()
-                this.first ^= 1
-            }
-        }
-    },
+    data() { return { dms: [], pos: null } },
     async mounted() {
         var roomid = this.$route.params.roomid
-        if(roomid == "redirect") {
+        var main = document.getElementById("main")
+        if (roomid == "redirect") {
             roomid = this.$route.query.roomid || 21452505
             this.dms.push(makeDanmaku("弹幕姬网址已更换"))
             this.dms.push(makeDanmaku(`https://danmu.nana7mi.link/${roomid}`))
         }
         await onClickShow(roomid, this.dms, this.$route.query.price || 9.9)
         document.getElementById("app").style.zoom = this.$route.query.zoom || 1
-        setInterval(this.clear, 500)
+        setInterval(() => main.lastElementChild.scrollIntoView({behavior: "smooth", block: "end"}), 500)
     },
-    watch: { "dms.length": function (val) { document.title = "Vue-Bili-Danmaku: " + val } }
+    watch: { "dms.length": function (val, old) { 
+        document.title = "Vue-Bili-Danmaku: " + val
+        if(val > old) setTimeout(() => {
+            var alpha = main.offsetHeight / window.innerHeight
+            if(alpha < 3) this.pos = this.dms.length
+            if(alpha > 5) for(var i = 0; i < (this.pos || 10); i++) this.dms.shift()
+        }, 500)
+    } }
 }
 </script>
   
 <style>
-#main {
+#main-container {
     position: absolute;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#main {
+    margin: 0 8px;
+    width: calc(100% - 16px);
     display: flex;
     flex-direction: column;
-    bottom: 0px;
-    width: calc(100% - 16px);
-    margin: 0 8px;
 }
 </style>

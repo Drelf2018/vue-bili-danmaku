@@ -50,7 +50,6 @@ export default {
   data() { return { close: true } },
   props: { dm: Object },
   mounted() {
-    //if(this.dm.cmd == 'DANMU_MSG' || this.dm.cmd == 'GUARD_BUY') 
     this.loadFace(this.dm.info.uid)
     setTimeout(()=>this.close = false, 50)
   },
@@ -67,9 +66,11 @@ export default {
 
 <style>
 .outer {
-  margin: 0.25em 0;
+  padding-bottom: 0.25em;
+  margin-top: calc(0.25em - 1px);
+  margin-bottom: 1px;
   position: relative;
-  transition: all 0.4s ease 0.05s;
+  transition: all 0.4s ease 0.1s;
 }
 
 .close {
