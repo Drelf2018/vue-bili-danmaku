@@ -10,6 +10,7 @@
 <script>
 import Message from './Message.vue';
 import { onClickShow, makeDanmaku } from '../bili-ws';
+import { openSocket } from '../selfWs';
 
 export default {
     name: 'Show',
@@ -23,7 +24,8 @@ export default {
             this.dms.push(makeDanmaku("弹幕姬网址已更换"))
             this.dms.push(makeDanmaku(`https://danmu.nana7mi.link/${roomid}`))
         }
-        await onClickShow(roomid, this.dms, this.$route.query.price || 9.9)
+        if(this.$route.query.useOld) await onClickShow(roomid, this.dms, this.$route.query.price || 9.9)
+        else openSocket("139.196.95.0:5319", roomid, this.dms, this.$route.query.price || 9.9)
         document.getElementById("app").style.zoom = this.$route.query.zoom || 1
         setInterval(() => main.lastElementChild.scrollIntoView({behavior: "smooth", block: "end"}), 300)
     },

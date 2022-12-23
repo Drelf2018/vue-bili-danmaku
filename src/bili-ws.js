@@ -150,7 +150,17 @@ function openSocket(url, room_id, owner, dms, min_price) {
                     } else if(element.cmd == "SUPER_CHAT_MESSAGE") {
                         dms.push({
                             cmd: element.cmd,
-                            info: element.data
+                            info: {
+                                title: element.data.user_info.uname,
+                                medal: element.data.medal_info,
+                                price: Number(element.data.price),
+                                message: element.data.message,
+                                avatar: element.data.face,
+                                uid: element.data.uid,
+                                contentcolor: element.data.background_color_end,
+                                headercolor: element.data.background_price_color,
+                                ts: element.data.ts
+                            }
                         })
                     } else if(element.cmd == "GUARD_BUY") {
                         dms.push({
@@ -163,7 +173,15 @@ function openSocket(url, room_id, owner, dms, min_price) {
                     } else if(element.cmd == "SEND_GIFT" && element.data.price / 1000 > min_price) {
                         dms.push({
                             cmd: element.cmd,
-                            info: element.data
+                            info: {
+                                title: element.data.uname,
+                                medal: element.data.medal_info,
+                                price: Number(element.data.price/1000),
+                                message: element.data.action + ' ' + element.data.giftName,
+                                avatar: element.data.face,
+                                uid: element.data.uid,
+                                ts: element.data.timestamp
+                            }
                         })
                     } 
                     // else if(element.cmd == "INTERACT_WORD") {

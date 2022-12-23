@@ -10,30 +10,17 @@
     </Danmaku>
 
     <SuperChat
-      v-if="dm.cmd == 'SUPER_CHAT_MESSAGE'"
-      :title="dm.info.user_info.uname"
-      :medal="dm.info.medal_info"
+      v-if="dm.cmd == 'SUPER_CHAT_MESSAGE' || dm.cmd == 'SEND_GIFT'"
+      :title="dm.info.title"
+      :medal="dm.info.medal"
       :price="Number(dm.info.price)"
       :message="dm.info.message"
-      :avatar="dm.info.face"
+      :avatar="dm.info.avatar"
       :uid="dm.info.uid"
-      :contentcolor="dm.info.background_color_end"
-      :headercolor="dm.info.background_price_color"
+      :contentcolor="dm.info.contentcolor"
+      :headercolor="dm.info.headercolor"
       :hiderate="true"
       :ts="dm.info.ts"/>
-
-    <SuperChat
-      v-if="dm.cmd == 'SEND_GIFT'"
-      :title="dm.info.uname"
-      :medal="dm.info.medal_info"
-      :price="Number(dm.info.price/1000)"
-      :message="dm.info.action + ' ' + dm.info.giftName"
-      :avatar="dm.info.face"
-      :uid="dm.info.uid"
-      :contentcolor="dm.info.background_color_end"
-      :headercolor="dm.info.background_price_color"
-      :hiderate="true"
-      :ts="dm.info.timestamp"/>
 
     <Guard v-if="dm.cmd == 'GUARD_BUY'" :msg="dm.info.msg" :face="dm.info.face"/>
   </div>
