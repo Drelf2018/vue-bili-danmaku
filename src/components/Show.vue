@@ -24,10 +24,14 @@ export default {
             this.dms.push(makeDanmaku("弹幕姬网址已更换"))
             this.dms.push(makeDanmaku(`https://danmu.nana7mi.link/${roomid}`))
         }
-        if(this.$route.query.useOld) await onClickShow(roomid, this.dms, this.$route.query.price || 9.9)
-        else openSocket("api.nana7mi.link:5719", roomid, this.dms, this.$route.query.price || 9.9)
+        var price = this.$route.query.price || 9.9
+        openSocket("api.nana7mi.link:5719", roomid, this.dms, price, function(dms){
+            return async function() { await onClickShow(roomid, dms, price) }
+        })
         document.getElementById("app").style.zoom = this.$route.query.zoom || 1
-        setInterval(() => main.lastElementChild.scrollIntoView({behavior: "smooth", block: "end"}), 300)
+        setInterval(() => {
+            if(main.lastElementChild)main.lastElementChild.scrollIntoView({behavior: "smooth", block: "end"})
+        }, 300)
     },
     watch: { "dms.length": function (val, old) { 
         document.title = "Vue-Bili-Danmaku: " + val
