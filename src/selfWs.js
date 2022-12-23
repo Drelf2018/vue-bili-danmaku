@@ -11,7 +11,7 @@ export function makeDanmaku(msg) {
 }
 
 export function openSocket(url, room_id, dms, min_price) {
-    let ws = new WebSocket(`ws://${url}/sub/${room_id}`);
+    let ws = new WebSocket(`wss://${url}/sub/${room_id}`);
     // WebSocket连接成功回调
     ws.onopen = () => dms.push(makeDanmaku("WebSocket 已连接上"))
     // WebSocket接收数据回调

@@ -25,7 +25,7 @@ export default {
             this.dms.push(makeDanmaku(`https://danmu.nana7mi.link/${roomid}`))
         }
         if(this.$route.query.useOld) await onClickShow(roomid, this.dms, this.$route.query.price || 9.9)
-        else openSocket("139.196.95.0:5319", roomid, this.dms, this.$route.query.price || 9.9)
+        else openSocket("api.nana7mi.link:5719", roomid, this.dms, this.$route.query.price || 9.9)
         document.getElementById("app").style.zoom = this.$route.query.zoom || 1
         setInterval(() => main.lastElementChild.scrollIntoView({behavior: "smooth", block: "end"}), 300)
     },
