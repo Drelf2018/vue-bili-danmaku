@@ -68,8 +68,8 @@ export default {
         {
           cmd: "SEND_GIFT",
           info: {
-            uname: "七海Nana7mi",
-            medal_info: {
+            title: "七海Nana7mi",
+            medal: {
               guard_level: 3,
               medal_level: 27,
               medal_name: "小孩梓",
@@ -77,20 +77,17 @@ export default {
               medal_color_end: 6850801,
               medal_color_border: 398668
             },
-            price: 9900,
-            action: "投喂",
-            giftName: "B克拉",
+            price: 9.9,
+            message: "投喂 B克拉",
             uid: 434334701,
-            timestamp: new Date().getTime() / 1000
+            ts: new Date().getTime() / 1000
           }
         },
         {
           cmd: "SUPER_CHAT_MESSAGE",
           info: {
-            user_info: {
-              uname: "七海Nana7mi",
-            },
-            medal_info: {
+            title: "七海Nana7mi",
+            medal: {
               guard_level: 3,
               medal_level: 27,
               medal_name: "小孩梓",

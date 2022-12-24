@@ -44,7 +44,7 @@ export default {
     loadFace(uid) {
         if(uid == -1) return;
         axios.get(`https://aliyun.nana7mi.link/user.User(${uid}).get_user_info().face?max_age=86400`)
-        .then(res => { this.dm.info.face = res.data.data })
+        .then(res => { this.dm.info.avatar = this.dm.info.face = res.data.data })
         .catch(err => { this.dm.info.face = "https://i0.hdslb.com/bfs/face/member/noface.jpg" })
     }
   }

@@ -1,7 +1,7 @@
 <template>  
     <div style="display: flex;align-items: center;">
         <slot></slot>
-        <div v-if="medal.medal_level" class="medal-box" :style="'margin-left: ' + (medal.guard_level || false ? '16.8px;' : '4.8px;')">
+        <div v-if="medal && medal.medal_level" class="medal-box" :style="'margin-left: ' + (medal.guard_level || false ? '16.8px;' : '4.8px;')">
             <img v-if="medal.guard_level || false" class="medal-flag"
                 :src="'https://i0.hdslb.com/bfs/activity-plat/static/20200716/1d0c5a1b042efb59f46d4ba1286c6727/icon-guard' + medal.guard_level + '.png@100w_100h_1c.webp'">
             <div class="medal-true-love"
