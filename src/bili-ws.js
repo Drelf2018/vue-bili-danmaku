@@ -1,17 +1,8 @@
 import pako from "pako";
 
 export async function onClickShow(roomid, dms, min_price, onerror) {
-    const roomData = await getRoomId(roomid);
-    if (roomData.code) {
-        alert("房间号错误");
-        return;
-    }
-    const socketData = await getWebSocketHost(roomData.data.room_id);
-    if (socketData.code) {
-        alert("房间号错误");
-        return;
-    }
-    openSocket(socketData.data.host, roomData.data.room_id, roomData.data.uid, dms, min_price).onerror = onerror;
+    const roomData = await axios.get(`https://api.nana7mi.link:5719/info/${roomid}`);
+    openSocket(roomData.data.host, roomData.data.room, roomData.data.uid, dms, min_price).onerror = onerror;
 }
 
 export function makeDanmaku(msg) {
@@ -24,16 +15,6 @@ export function makeDanmaku(msg) {
             msg: msg
         }
     }
-}
-
-async function getRoomId(id) {
-    const res = await axios.get(`https://aliyun.nana7mi.link/live.LiveRoom(${id}).get_room_play_info()`);
-    return res.data;
-}
-
-async function getWebSocketHost(roomid) {
-    const res = await axios.get(`https://aliyun.nana7mi.link/live.LiveRoom(${roomid}).get_chat_conf()`);
-    return res.data;
 }
 
 // 从buffer中读取int
