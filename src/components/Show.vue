@@ -10,7 +10,6 @@
 <script>
 import Message from './Message.vue';
 import { onClickShow, makeDanmaku } from '../bili-ws';
-import { openSocket } from '../selfWs';
 
 export default {
     name: 'Show',
@@ -18,16 +17,30 @@ export default {
     data() { return { dms: [], pos: null, alpha: 0 } },
     async mounted() {
         var roomid = this.$route.params.roomid
+        var price = this.$route.query.price || 9.9
         var main = document.getElementById("main")
+        
         if (roomid == "redirect") {
             roomid = this.$route.query.roomid || 21452505
             this.dms.push(makeDanmaku("弹幕姬网址已更换"))
             this.dms.push(makeDanmaku(`https://danmu.nana7mi.link/${roomid}`))
         }
-        var price = this.$route.query.price || 9.9
-        openSocket("api.nana7mi.link:5719", roomid, this.dms, price, function(dms){
-            return async function() { await onClickShow(roomid, dms, price) }
-        })
+
+        onClickShow(roomid, this.dms, price,
+            () => {
+                let ws = new WebSocket(`wss://api.nana7mi.link:5719/sub/${roomid}`);
+                // WebSocket连接成功回调
+                ws.onopen = () => this.dms.push(makeDanmaku("WebSocket 已连接上"))
+                // WebSocket接收数据回调
+                ws.onmessage = (event) => {
+                    var element = JSON.parse(event.data)
+                    // console.log(element)
+                    if(element.cmd == "SEND_GIFT" && element.info.price <= price) return
+                    this.dms.push(element)
+                }
+            }
+        )
+        
         document.getElementById("app").style.zoom = this.$route.query.zoom || 1
         setInterval(() => {
             if(main.lastElementChild)main.lastElementChild.scrollIntoView({behavior: "smooth", block: "end"})

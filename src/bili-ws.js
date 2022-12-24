@@ -1,6 +1,6 @@
 import pako from "pako";
 
-export async function onClickShow(roomid, dms, min_price) {
+export async function onClickShow(roomid, dms, min_price, onerror) {
     const roomData = await getRoomId(roomid);
     if (roomData.code) {
         alert("房间号错误");
@@ -11,7 +11,7 @@ export async function onClickShow(roomid, dms, min_price) {
         alert("房间号错误");
         return;
     }
-    openSocket(socketData.data.host, roomData.data.room_id, roomData.data.uid, dms, min_price);
+    openSocket(socketData.data.host, roomData.data.room_id, roomData.data.uid, dms, min_price).onerror = onerror;
 }
 
 export function makeDanmaku(msg) {
@@ -196,6 +196,7 @@ function openSocket(url, room_id, owner, dms, min_price) {
         // console.log("连接已关闭");
         if (timer != null) clearInterval(timer);
     };
+    return ws
 }
 //组合认证数据包
 function getCertification(json) {
