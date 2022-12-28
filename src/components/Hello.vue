@@ -81,7 +81,7 @@ export default {
 #container {
   padding: 16px 0;
   min-height: calc(100vh - 32px);
-  background: url("https://i0.hdslb.com/bfs/album/4ac65a169fac549e3b40d66efb4e66eb1ee4fb2b.png") 0px center / cover no-repeat fixed;
+  background: url("/bg.png") 0px center / cover no-repeat fixed;
   /* filter: grayscale(0.95); */
   overflow: hidden;
 }
