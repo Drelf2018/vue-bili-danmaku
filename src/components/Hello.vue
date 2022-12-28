@@ -1,6 +1,6 @@
 <template>
   <div id="container">
-    <div v-if="dms" id="box" class="glass">
+    <div v-if="dms" id="box" class="glass" :style="'zoom: ' + resize()">
       <div id="hello">
         <Message v-for="dm in dms" :dm="dm" />
       </div>
@@ -72,7 +72,11 @@ export default {
       }
     )
     
-    return { dms }
+    function resize() {
+      return Math.min(1, 0.8*window.innerWidth / 382)
+    }
+
+    return { dms, resize }
   }
 }
 </script>
@@ -137,7 +141,6 @@ export default {
 
 @media screen and (max-width: 816px) {
   #box {
-    position:absolute;
     margin: 0 auto;
     left: 0;
     right: 0;
