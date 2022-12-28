@@ -31,7 +31,6 @@ const router = createRouter({
 })
 
 var app = createApp(App)
-app.config.globalProperties.redirect = path => router.push(path)
 app.directive('drag', (el) => {
     const oDiv = el // 当前元素
     const minTop = oDiv.getAttribute('drag-min-top')
@@ -42,8 +41,6 @@ app.directive('drag', (el) => {
         while (window.getComputedStyle(target).position !== 'relative' && target !== document.body) {
             target = target.parentElement
         }
-
-        if(window.getComputedStyle(target).getPropertyValue("--move") !== "1") return false
 
         document.onselectstart = () => {
             return false
@@ -58,7 +55,7 @@ app.directive('drag', (el) => {
 
         // 鼠标按下，计算当前元素距离可视区的距离
         const disX = e.clientX - target.offsetLeft
-        const disY = e.clientY - target.offsetTop
+        const disY = e.clientY - target.offsetTop + 16
         document.onmousemove = e => {
             // 通过事件委托，计算移动的距离
             // 因为浏览器里并不能直接取到并且使用clientX、clientY,所以使用事件委托在内部做完赋值

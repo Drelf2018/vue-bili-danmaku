@@ -10,7 +10,7 @@
     </Danmaku>
 
     <SuperChat
-      v-if="dm.cmd == 'SUPER_CHAT_MESSAGE' || dm.cmd == 'SEND_GIFT'"
+      v-else-if="dm.cmd == 'SUPER_CHAT_MESSAGE' || dm.cmd == 'SEND_GIFT'"
       :title="dm.info.title"
       :medal="dm.info.medal"
       :price="Number(dm.info.price)"
@@ -22,7 +22,7 @@
       :hiderate="true"
       :ts="dm.info.ts"/>
 
-    <Guard v-if="dm.cmd == 'GUARD_BUY'" :msg="dm.info.msg" :face="dm.info.face"/>
+    <Guard v-else-if="dm.cmd == 'GUARD_BUY'" :msg="dm.info.msg" :face="dm.info.face"/>
   </div>
 </template>
 

@@ -1,125 +1,78 @@
 <template>
   <div id="container">
-    <div id="box" class="glass" :style="'zoom: '+resize">
-      <div v-drag id="title">
-        <span><strong>自定义配置</strong></span>
-      </div>
+    <div v-if="dms" id="box" class="glass">
       <div id="hello">
         <Message v-for="dm in dms" :dm="dm" />
       </div>
-      <div style="width:2px; height:100%; background-color: rgba(255,255,255,0.6);"></div>
-      <div id="edit">
-        <span style="font-size: 150px;">
-          我 测<br>
-          你 码<br>
-          我 测<br>
-          你 码<br>
-          我 测<br>
-          你 码<br>
-          我 测<br>
-          你 码
-        </span>
-      </div>
+      <ion-icon v-drag name="move-outline" class="move"></ion-icon>
     </div>
   </div>
 </template>
 
 <script>
 import Message from './Message.vue'
+import { ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 export default {
-  name: 'Hello',
   components: { Message },
-  data() {
-    return {
-      dms: [
-        {
-          cmd: "DANMU_MSG",
-          info: {
-            uid: 434334701,
-            sender: "default",
-            msg: "普通弹幕"
-          }
-        },
-        {
-          cmd: "DANMU_MSG",
-          info: {
-            uid: 434334701,
-            sender: "guard",
-            msg: "航海弹幕"
-          }
-        },
-        {
-          cmd: "DANMU_MSG",
-          info: {
-            uid: 434334701,
-            sender: "owner",
-            msg: "房管弹幕"
-          }
-        },
-        {
-          cmd: "DANMU_MSG",
-          info: {
-            uid: 434334701,
-            sender: "self",
-            msg: "主播弹幕"
-          }
-        },
-        {
-          cmd: "SEND_GIFT",
-          info: {
-            title: "七海Nana7mi",
-            medal: {
-              guard_level: 3,
-              medal_level: 27,
-              medal_name: "小孩梓",
-              medal_color_start: 398668,
-              medal_color_end: 6850801,
-              medal_color_border: 398668
-            },
-            price: 9.9,
-            message: "投喂 B克拉",
-            uid: 434334701,
-            ts: new Date().getTime() / 1000
-          }
-        },
-        {
-          cmd: "SUPER_CHAT_MESSAGE",
-          info: {
-            title: "七海Nana7mi",
-            medal: {
-              guard_level: 3,
-              medal_level: 27,
-              medal_name: "小孩梓",
-              medal_color_start: 398668,
-              medal_color_end: 6850801,
-              medal_color_border: 398668
-            },
-            price: 30,
-            uid: 434334701,
-            message: "醒目留言",
-            ts: new Date().getTime() / 1000
+  setup() {
+    if(useRoute().query.roomid) useRouter().push(`redirect/?roomid=${useRoute().query.roomid}`)
+    
+    const uid = 434334701
+    const uname = "七海Nana7mi"
+    const dms = ref()
+
+    function make_standard_danmaku(sender, msg) {
+      return {
+        cmd: "DANMU_MSG",
+        info: {
+          uid: uid,
+          sender: sender,
+          msg: msg
+        }
+      }
+    }
+
+    function make_gift(cmd, medal) {
+      return {
+        cmd: cmd,
+        info: {
+          title: uname,
+          medal: medal,
+          price: cmd == "SEND_GIFT" ? 9.9 : 50,
+          message: cmd == "SEND_GIFT" ? "投喂 B克拉" : "醒目留言",
+          contentcolor: cmd == "SEND_GIFT" ? "#2A60B2" : "#427D9E",
+          headercolor: cmd == "SEND_GIFT" ? "#7497CD" : "#7DA4BD",
+          uid: uid,
+          ts: new Date().getTime() / 1000
+        }
+      }
+    }
+
+    axios.get("https://aliyun.nana7mi.link/user.User(434334701).get_user_info().fans_medal.medal").then(
+      res => {
+        const medal = res.data.data
+        medal.medal_level = medal.level
+        dms.value = [
+          make_standard_danmaku("default", "普通弹幕"),
+          make_standard_danmaku("guard", "航海弹幕"),
+          make_standard_danmaku("owner", "房管弹幕"),
+          make_standard_danmaku("self", "主播弹幕"),
+          make_gift("SEND_GIFT", medal),
+          make_gift("SUPER_CHAT_MESSAGE", medal),
+          {
+            cmd: "GUARD_BUY",
+            info: {
+              msg: `新舰长！<br />欢迎 ${uname}！`,
+              uid: uid
+            }
           },
-        },
-        {
-          cmd: "GUARD_BUY",
-          info: {
-            msg: `新舰长！<br />欢迎 七海Nana7mi！`,
-            uid: 434334701
-          }
-        },
-      ]
-    }
-  },
-  mounted() {
-    if(this.$route.query.roomid) this.redirect(`redirect/?roomid=${this.$route.query.roomid}`)
-    document.getElementById("box").style.height = `${document.getElementById("hello").offsetHeight}px`
-  },
-  computed: {
-    resize() {
-      if(0.8*window.innerWidth < 432) return 0.8*window.innerWidth / 432
-      else return 1
-    }
+        ]
+      }
+    )
+    
+    return { dms }
   }
 }
 </script>
@@ -128,7 +81,7 @@ export default {
 #container {
   padding: 16px 0;
   min-height: calc(100vh - 32px);
-  background: url("/sky.jpg") 0px center / cover no-repeat fixed;
+  background: url("https://i0.hdslb.com/bfs/album/4ac65a169fac549e3b40d66efb4e66eb1ee4fb2b.png") 0px center / cover no-repeat fixed;
   /* filter: grayscale(0.95); */
   overflow: hidden;
 }
@@ -136,10 +89,11 @@ export default {
 .glass {
   position: relative;
   border-radius: 20px;
-  padding: 3em 1em 1em;
+  padding: 0.5em 1em;
   box-shadow: 0 .5em 1em rgba(0, 0, 0, 0.6);
   overflow: hidden;
   z-index: 2;
+  background: inherit;
 }
 
 .glass::before {
@@ -149,49 +103,48 @@ export default {
   height: calc(100% + 2em);
   top: -1em;
   left: -1em;
-  background: url("/sky.jpg") 0px center / cover no-repeat fixed;
+  background: inherit;
   box-shadow: 0 0 0 448px rgba(255, 255, 255, 0.2) inset;
   filter: blur(5px);
   z-index: -1;
 }
 
-#title {
-  position: absolute;
-  width: 100%;
-  height: 32px;
-  font-size: 1.4em;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: rgb(10,12,25);
-  background-color: rgba(255,255,255,0.4);
-}
-
 #hello {
-  width: 400px;
-  left: calc(50vw - 200px - 1em);
-  height: max-content;
+  width: 350px;
+  /* height: max-content; */
 }
 
 #box {
-  width: 832px;
+  width: fit-content;
   display: flex;
   justify-content: space-between;
-  left: calc(50% - 432px);
+  left: 1em;
   position: relative;
-  --move:1;
+}
+
+.move {
+  font-size: 1.5em;
+  position: absolute;
+  right: 0.5em;
+  top: 0.5em;
+  padding: 0.25em;
+  border-radius: 0.3em;
+}
+
+.move:hover {
+  box-shadow: 0 1px 3px grey;
 }
 
 @media screen and (max-width: 816px) {
   #box {
-    width: 400px;
-    left: calc(50% - 216px);
-    flex-direction: column;
-    height: auto !important;
-    zoom: calc(80vw / 400);
-    --move:0;
+    position:absolute;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+  }
+
+  .move {
+    display: none;
   }
 }
 
