@@ -5,9 +5,8 @@
       :face="dm.info.face"
       :uid="dm.info.uid"
       :sender="dm.info.sender"
-      :src="dm.info.src">
-      {{ dm.info.msg }}
-    </Danmaku>
+      :src="dm.info.src"
+      :msg="dm.info.msg" />
 
     <SuperChat
       v-else-if="dm.cmd == 'SUPER_CHAT_MESSAGE' || dm.cmd == 'SEND_GIFT'"

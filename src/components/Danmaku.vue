@@ -2,7 +2,7 @@
   <div class="dmk">
     <img class='face' :src="face" alt>
     <span :class="[sender, 'message']" :style="src ? 'padding: 0.6em' : ''">
-      <slot v-if="!src"></slot>
+      <div v-if="!src" v-html="msg"></div>
       <img v-if="src" :src="src" style="max-width: 3em">
     </span>
   </div>
@@ -11,7 +11,7 @@
 <script>
 export default {
   name: 'Danmaku',
-  props: { face: String, uid: Number, sender: String, src: String }
+  props: { face: String, uid: Number, sender: String, src: String, msg: String }
 }
 </script>
 
@@ -28,6 +28,11 @@ export default {
     border-radius: 50%;
     box-shadow: 0px 3px 4px 0px black;
     margin-right: 0.87em;
+}
+
+.emoji {
+    height: 1.2em;
+    vertical-align: -0.25em;
 }
 
 .default {

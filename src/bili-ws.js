@@ -1,6 +1,16 @@
 import pako from "pako";
 
+const emoji = []
+const pattern = new RegExp(/\[.+?\]/g)
+
 export async function onClickShow(roomid, dms, min_price, onerror) {
+    
+    axios.get("https://aliyun.nana7mi.link/emoji.get_emoji_list()").then(
+        res => res.data.data.packages.filter(p => p.text == "小黄脸").forEach(
+            p => p.emote.forEach(em => emoji[em.text] = em.url)
+        )
+    )
+    
     const roomData = await axios.get(`https://api.nana7mi.link:5719/info/${roomid}`);
     openSocket(roomData.data.host, roomData.data.room, roomData.data.uid, dms, min_price).onerror = onerror;
 }
@@ -116,15 +126,20 @@ function openSocket(url, room_id, owner, dms, min_price) {
                 //会同时有多个 数发过来 所以要循环
                 for (let i = 0; i < packet.body.length; i++) {
                     var element = packet.body[i];
+                    // console.log(element);
                     if(!element.cmd) return;
                     else if(element.cmd.startsWith("DANMU_MSG")) {
+                        // console.log(element.info[1]);
+                        var msg = "<span>" + element.info[1].replace(pattern, em => 
+                            emoji[em] ? '</span><img class="emoji" src="' + emoji[em] + '"><span>' : em
+                        ) + "</span>"
                         dms.push({
                             cmd: "DANMU_MSG",
                             info: {
                                 face: null,
                                 uid: element.info[2][0],
                                 sender: element.info[2][0] == owner ? "self" : element.info[2][2] == 1 ? "owner" : element.info[2][7] == "" ? "default" : "guard",
-                                msg: element.info[1],
+                                msg: msg,
                                 src: element.info[0][13].url
                             }
                         })

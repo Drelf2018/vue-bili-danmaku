@@ -15,7 +15,7 @@ export default {
     name: 'Show',
     components: { Message },
     data() { return { dms: [], pos: null, alpha: 0 } },
-    async mounted() {
+    mounted() {
         var roomid = this.$route.params.roomid
         var price = this.$route.query.price || 9.9
         var main = document.getElementById("main")
