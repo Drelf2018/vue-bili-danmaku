@@ -13,6 +13,7 @@
 import Message from './Message.vue'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import axios from 'axios'
 
 export default {
   components: { Message },
