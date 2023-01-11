@@ -32,7 +32,7 @@ export default {
 
 .emoji {
     height: 1.2em;
-    vertical-align: -0.25em;
+    vertical-align: -0.23em;
 }
 
 .default {

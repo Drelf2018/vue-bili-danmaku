@@ -9,7 +9,7 @@
   
 <script>
 import Message from './Message.vue';
-import { onClickShow, makeDanmaku } from '../bili-ws';
+import { onClickShow, makeDanmaku } from '../bili-ts-ws';
 
 export default {
     name: 'Show',

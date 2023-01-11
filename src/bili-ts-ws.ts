@@ -1,21 +1,12 @@
 import pako from "pako";
+import axios from "axios";
 
-const emoji = []
-const pattern = new RegExp(/\[.+?\]/g)
-
-export async function onClickShow(roomid, dms, min_price, onerror) {
-    
-    axios.get("https://aliyun.nana7mi.link/emoji.get_emoji_list()").then(
-        res => res.data.data.packages.filter(p => p.text == "小黄脸").forEach(
-            p => p.emote.forEach(em => emoji[em.text] = em.url)
-        )
-    )
-    
+export async function onClickShow(roomid: Number, dms, min_price: Number, onerror) {
     const roomData = await axios.get(`https://api.nana7mi.link:5719/info/${roomid}`);
     openSocket(roomData.data.host, roomData.data.room, roomData.data.uid, dms, min_price).onerror = onerror;
 }
 
-export function makeDanmaku(msg) {
+export function makeDanmaku(msg: string) {
     return {
         cmd: "DANMU_MSG",
         info: {
@@ -40,20 +31,22 @@ const readInt = function (buffer, start, len) {
  * blob blob数据
  * call 回调 解析数据会通过回调返回数据
  */
-function decode(blob, call) {
+function decode(blob: Blob, call: Function) {
     // 文本解码器
     var textDecoder = new TextDecoder("utf-8");
     let reader = new FileReader();
     reader.onload = function (e) {
-        let buffer = new Uint8Array(e.target.result);
-        let result = {};
-        result.packetLen = readInt(buffer, 0, 4);
-        result.headerLen = readInt(buffer, 4, 2);
-        result.ver = readInt(buffer, 6, 2);
-        result.op = readInt(buffer, 8, 4);
-        result.seq = readInt(buffer, 12, 4);
+        let buffer = new Uint8Array(e.target.result as ArrayBuffer);
+        let result = {
+            packetLen: readInt(buffer, 0, 4),
+            headerLen: readInt(buffer, 4, 2),
+            ver: readInt(buffer, 6, 2),
+            op: readInt(buffer, 8, 4),
+            seq: readInt(buffer, 12, 4),
+            body: []
+        };
+        
         if (result.op == 5) {
-            result.body = [];
             let offset = 0;
             while (offset < buffer.length) {
                 let packetLen = readInt(buffer, offset + 0, 4);
@@ -82,13 +75,13 @@ function decode(blob, call) {
                 offset += packetLen;
             }
         }
-        //回调
+        // 回调
         call(result);
     };
     reader.readAsArrayBuffer(blob);
 }
 
-function openSocket(url, room_id, owner, dms, min_price) {
+function openSocket(url: string, room_id: Number, owner: Number, dms, min_price: Number) {
     let timer = null;
     let ws = new WebSocket(`wss://${url}/sub`);
     let json = {
@@ -126,13 +119,11 @@ function openSocket(url, room_id, owner, dms, min_price) {
                 //会同时有多个 数发过来 所以要循环
                 for (let i = 0; i < packet.body.length; i++) {
                     var element = packet.body[i];
-                    // console.log(element);
                     if(!element.cmd) return;
                     else if(element.cmd.startsWith("DANMU_MSG")) {
-                        // console.log(element.info[1]);
-                        var msg = "<span>" + element.info[1].replace(pattern, em => 
-                            emoji[em] ? '</span><img class="emoji" src="' + emoji[em] + '"><span>' : em
-                        ) + "</span>"
+                        let msg: string = element.info[1]
+                        let emoji = JSON.parse(element.info[0][15].extra).emots
+                        for (let em in emoji) msg = msg.replace(RegExp(`\\[${em.slice(1,-1)}\\]`, "g"), `<img class="emoji" src="${emoji[em].url}">`)
                         dms.push({
                             cmd: "DANMU_MSG",
                             info: {

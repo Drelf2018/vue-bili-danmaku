@@ -29,6 +29,7 @@
 import Danmaku from './Danmaku.vue'
 import SuperChat from './SuperChat.vue'
 import Guard from './Guard.vue'
+import axios from 'axios'
 
 export default {
   name: 'Message',
