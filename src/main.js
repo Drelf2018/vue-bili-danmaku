@@ -15,7 +15,6 @@ Date.prototype.Format = function (fmt) {
 }
 
 import './index.css'
-import './assets/font/font.css'
 import App from './App.vue'
 import Hello from './components/Hello.vue'
 import Show from './components/Show.vue'

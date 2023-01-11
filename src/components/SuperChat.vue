@@ -244,11 +244,6 @@ export default {
   display: none;
 }
 
-html,
-body {
-  scroll-behavior: smooth;
-}
-
 html:not(.style-scope) {
   --yt-live-chat-background-color: hsl(0, 0%, 100%);
   --yt-live-chat-action-panel-background-color: hsla(0, 0%, 93.3%, 0.4);

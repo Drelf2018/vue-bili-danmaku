@@ -1,11 +1,13 @@
 {
   "name": "vue-bili-danmaku",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
+    "@vitejs/plugin-vue": "^4.0.0",
     "axios": "^1.2.2",
     "pako": "^2.0.4",
     "qs": "^6.11.0",
@@ -13,7 +15,7 @@
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
-    "vite": "^1.0.0-rc.13",
-    "@vue/compiler-sfc": "^3.0.4"
+    "@vue/compiler-sfc": "^3.0.4",
+    "vite": "4.0.4"
   }
 }

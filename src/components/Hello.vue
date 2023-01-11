@@ -120,7 +120,7 @@ export default {
 }
 
 #box {
-  width: fit-content;
+  width: max-content;
   display: flex;
   justify-content: space-between;
   left: 1em;
