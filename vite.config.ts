@@ -21,14 +21,10 @@ export default defineConfig({
         sourcemap: false,
         //自定义底层的 Rollup 打包配置
         rollupOptions: {
-            input:{//可以配置多个，表示多入口
-                index:path.resolve(__dirname,"index.html"),
-                // project:resolve(__dirname,"project.html")
-            },
             output:{
-                chunkFileNames:'static/js/[name]-[hash].js',
-                entryFileNames:"static/js/[name]-[hash].js",
-                assetFileNames:"static/[ext]/name-[hash].[ext]"
+                chunkFileNames:'static/[name]-[hash].js',
+                entryFileNames:"static/[name]-[hash].js",
+                assetFileNames:"static/[name]-[hash].[ext]"
             }
         },
         //默认情况下，若 outDir 在 root 目录下，则 Vite 会在构建时清空该目录。
