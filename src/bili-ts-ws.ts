@@ -1,9 +1,12 @@
 import pako from "pako";
 import axios from "axios";
 
-export async function onClickShow(roomid: Number, dms, min_price: Number, onerror) {
-    const roomData = await axios.get(`https://api.nana7mi.link:5719/info/${roomid}`);
-    openSocket(roomData.data.host, roomData.data.room, roomData.data.uid, dms, min_price).onerror = onerror;
+export async function onClickShow(roomid: Number, dms, min_price: Number) {
+    const roomData = await axios.get(`https://aliyun.nana7mi.link/live.LiveRoom(${roomid}).get_room_info()`);
+    const data = roomData.data.data
+    const chatData = await axios.get(`https://aliyun.nana7mi.link/live.LiveRoom(${data.room_info.room_id}).get_chat_conf()`);
+    openSocket(chatData.data.data.host, data.room_info.room_id, data.room_info.uid, dms, min_price)
+    // .onerror = onerror;
 }
 
 export function makeDanmaku(msg: string) {

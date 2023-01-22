@@ -26,20 +26,7 @@ export default {
             this.dms.push(makeDanmaku(`https://danmu.nana7mi.link/${roomid}`))
         }
 
-        onClickShow(roomid, this.dms, price,
-            () => {
-                let ws = new WebSocket(`wss://api.nana7mi.link:5719/sub/${roomid}`);
-                // WebSocket连接成功回调
-                ws.onopen = () => this.dms.push(makeDanmaku("WebSocket 已连接上"))
-                // WebSocket接收数据回调
-                ws.onmessage = (event) => {
-                    var element = JSON.parse(event.data)
-                    // console.log(element)
-                    if(element.cmd == "SEND_GIFT" && element.info.price <= price) return
-                    this.dms.push(element)
-                }
-            }
-        )
+        onClickShow(roomid, this.dms, price)
         
         document.getElementById("app").style.zoom = this.$route.query.zoom || 1
         setInterval(() => {
