@@ -2,7 +2,7 @@
   <span v-if="$route.query.debug" style="position: absolute;right: 0.5em;color: grey">{{ alpha }}</span>
   <div id="main-container">
     <div id="main">
-      <Message v-for="dm in dms" :odm="dm" />
+      <Message :key="dm" v-for="dm in dms" :odm="dm" />
     </div>
   </div>
 </template>
