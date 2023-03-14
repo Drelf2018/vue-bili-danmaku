@@ -1,13 +1,4 @@
-import pako from "pako";
-import aliyun from './aliyun'
-
-export async function onClickShow(roomid: Number, dms, min_price: Number) {
-  const roomData = await aliyun.get(`/live.LiveRoom(${roomid}).get_room_info()`);
-  const data = roomData.data.data
-  const chatData = await aliyun.get(`/live.LiveRoom(${data.room_info.room_id}).get_chat_conf()`);
-  openSocket(chatData.data.data.host, data.room_info.room_id, data.room_info.uid, dms, min_price)
-  // .onerror = onerror;
-}
+import pako from "pako"
 
 export function makeDanmaku(msg: string) {
   return {
@@ -84,8 +75,19 @@ function decode(blob: Blob, call: Function) {
   reader.readAsArrayBuffer(blob);
 }
 
-function openSocket(url: string, room_id: Number, owner: Number, dms, min_price: Number) {
+class Handler {
+  all(element) {}
+  onopen(data) {}
+  ondanmaku(element) {}
+  onsuperchat(element) {}
+  onguard(element) {}
+  ongift(element) {}
+  oninteract(element) {}
+}
+
+export function openSocket(url: string, room_id: number) {
   let timer = null;
+  let handler = new Handler()
   let ws = new WebSocket(`wss://${url}/sub`);
   let json = {
     uid: 0,
@@ -96,7 +98,7 @@ function openSocket(url: string, room_id: Number, owner: Number, dms, min_price:
   };
   // WebSocket连接成功回调
   ws.onopen = function () {
-    dms.push(makeDanmaku("WebSocket 已连接上"))
+    handler.onopen("WebSocket 已连接上")
     ws.send(getCertification(JSON.stringify(json)).buffer);
     //心跳包的定时器
     timer = setInterval(function () {
@@ -122,61 +124,25 @@ function openSocket(url: string, room_id: Number, owner: Number, dms, min_price:
         //会同时有多个 数发过来 所以要循环
         for (let i = 0; i < packet.body.length; i++) {
           var element = packet.body[i];
-          if (!element.cmd) return;
-          else if (element.cmd.startsWith("DANMU_MSG")) {
-            let msg: string = element.info[1]
-            let emoji = JSON.parse(element.info[0][15].extra).emots
-            for (let em in emoji) msg = msg.replace(RegExp(`\\[${em.slice(1, -1)}\\]`, "g"), `<img class="emoji" src="${emoji[em].url}">`)
-            dms.push({
-              cmd: "DANMU_MSG",
-              info: {
-                face: null,
-                uid: element.info[2][0],
-                sender: element.info[2][0] == owner ? "self" : element.info[2][2] == 1 ? "owner" : element.info[2][7] == "" ? "default" : "guard",
-                msg: msg,
-                src: element.info[0][13].url
-              }
-            })
-          } else if (element.cmd == "SUPER_CHAT_MESSAGE") {
-            dms.push({
-              cmd: element.cmd,
-              info: {
-                title: element.data.user_info.uname,
-                medal: element.data.medal_info,
-                price: Number(element.data.price),
-                message: element.data.message,
-                avatar: element.data.face,
-                uid: element.data.uid,
-                contentcolor: element.data.background_color_end,
-                headercolor: element.data.background_price_color,
-                ts: element.data.ts
-              }
-            })
-          } else if (element.cmd == "GUARD_BUY") {
-            dms.push({
-              cmd: element.cmd,
-              info: {
-                msg: `新${element.data.gift_name}！<br />欢迎 ${element.data.username}！`,
-                uid: element.data.uid
-              }
-            })
-          } else if (element.cmd == "SEND_GIFT" && element.data.price / 1000 > min_price) {
-            dms.push({
-              cmd: element.cmd,
-              info: {
-                title: element.data.uname,
-                medal: element.data.medal_info,
-                price: Number(element.data.price / 1000),
-                message: element.data.action + ' ' + element.data.giftName,
-                avatar: element.data.face,
-                uid: element.data.uid,
-                ts: element.data.timestamp
-              }
-            })
+          if (!element.cmd) continue;
+          handler.all(element)
+          switch(element.cmd) {
+            case "DANMU_MSG":
+              handler.ondanmaku(element)
+              break
+            case "SUPER_CHAT_MESSAGE":
+              handler.onsuperchat(element)
+              break
+            case "GUARD_BUY":
+              handler.onguard(element)
+              break
+            case "SEND_GIFT":
+              handler.ongift(element)
+              break
+            case "INTERACT_WORD":
+              handler.oninteract(element)
+              break
           }
-          // else if(element.cmd == "INTERACT_WORD") {
-          //     dms.push(makeDanmaku(element.data.uname + " 进入直播间"))
-          // }
         }
       }
     });
@@ -186,8 +152,9 @@ function openSocket(url: string, room_id: Number, owner: Number, dms, min_price:
     // console.log("连接已关闭");
     if (timer != null) clearInterval(timer);
   };
-  return ws
+  return handler
 }
+
 //组合认证数据包
 function getCertification(json) {
   var bytes = str2bytes(json); //字符串转bytes
