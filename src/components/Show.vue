@@ -22,7 +22,8 @@ const pos = ref(0)
 const alpha = ref(0)
 const route = useRoute()
 
-let min_price = parseFloat(route.query.price) || 9.9
+let min_price = 9.9
+if(route.query.price != null) min_price = parseFloat(route.query.price)
 let uid = 0
 let roomid = route.params.roomid
 if (roomid == "redirect") {
@@ -109,8 +110,8 @@ function guard(element) {
 }
 
 function gift(element) {
-  if(element.data.price / 1000 <= min_price) return
-  dms.push({
+  if(element.data.price <= 1000 * min_price) return
+  dms.value.push({
     cmd: element.cmd,
     info: {
       title: element.data.uname,
