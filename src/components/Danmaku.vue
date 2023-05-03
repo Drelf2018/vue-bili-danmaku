@@ -2,14 +2,18 @@
   <div class="dmk">
     <img class='face' :src="face" alt>
     <span :class="[sender, 'message']" :style="src ? 'padding: 0.6em' : ''">
-      <div v-if="!src" v-html="msg"></div>
-      <img v-if="src" :src="src" style="max-width: 3em">
+      <div>
+        <p v-if="name" style="margin: 3px 0">{{ name }}</p>
+        <div v-if="!src" v-html="msg"></div>
+        <img v-if="src" :src="src" style="max-width: 3em">
+      </div>
     </span>
   </div>
 </template>
 
 <script setup>
 defineProps({
+  name: String,
   face: String,
   uid: Number,
   sender: String,

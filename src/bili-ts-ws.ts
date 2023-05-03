@@ -4,6 +4,7 @@ export function makeDanmaku(msg: string) {
   return {
     cmd: "DANMU_MSG",
     info: {
+      name: "Server",
       face: "https://yun.nana7mi.link/ico.webp",
       uid: -1,
       sender: "default",

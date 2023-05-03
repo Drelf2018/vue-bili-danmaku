@@ -1,6 +1,6 @@
 <template>
   <div :class="[close ? 'close' : 'open', 'outer']">
-    <Danmaku v-if="dm.cmd == 'DANMU_MSG'" :face="dm.info.face" :uid="dm.info.uid" :sender="dm.info.sender"
+    <Danmaku v-if="dm.cmd == 'DANMU_MSG'" :name="dm.info.name" :face="dm.info.face" :uid="dm.info.uid" :sender="dm.info.sender"
       :src="dm.info.src" :msg="dm.info.msg" />
 
     <SuperChat v-else-if="dm.cmd == 'SUPER_CHAT_MESSAGE' || dm.cmd == 'SEND_GIFT'" :title="dm.info.title"

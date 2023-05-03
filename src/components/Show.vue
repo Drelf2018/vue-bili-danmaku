@@ -73,6 +73,7 @@ function danmaku(element) {
   dms.value.push({
     cmd: "DANMU_MSG",
     info: {
+      name: roomid == 21452505 ? element.info[2][1] : null,
       face: null,
       uid: element.info[2][0],
       sender: element.info[2][0] == uid ? "self" : element.info[2][2] == 1 ? "owner" : element.info[2][7] == "" ? "default" : "guard",
