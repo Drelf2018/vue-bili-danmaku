@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const aliyun = axios.create({
   // baseURL: 'https://aliyun.nana7mi.link/',
-  baseURL: 'http://api.nana7mi.link:9000/',
+  baseURL: 'https://gh.nana7mi.link/',
 })
 
 export default aliyun
