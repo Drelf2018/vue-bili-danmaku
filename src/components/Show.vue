@@ -15,7 +15,7 @@ import { ref, onMounted, watch } from 'vue';
 
 import { useRoute } from 'vue-router';
 
-import { get_room_info, get_chat_host } from '../aliyun'
+import { get_room_info, get_chat_host, get_chat_conf } from '../aliyun'
 
 const dms = ref([])
 const pos = ref(0)
@@ -37,8 +37,8 @@ const roomData = await get_room_info(roomid)
 // 更新房间号和 uid
 uid = roomData.room_info.uid
 roomid = roomData.room_info.room_id
-
-const handler = openSocket(await get_chat_host(roomid), roomid)
+conf = await get_chat_conf(roomid)
+const handler = openSocket(conf["host"], uid, roomid, "", conf["token"])
 
 handler.ongift = gift
 handler.onguard = guard

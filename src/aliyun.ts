@@ -24,6 +24,10 @@ export async function get_room_info(roomid: string | number, max_age: number = -
   return await request(`/live.LiveRoom(${roomid}).get_room_info()`, max_age)
 }
 
+export async function get_chat_conf(roomid: string | number, max_age: number = -1) {
+  return await request(`/live.LiveRoom(${roomid}).get_chat_conf()`, max_age)
+}
+
 export async function get_chat_host(roomid: string | number, max_age: number = -1) {
   return await request(`/live.LiveRoom(${roomid}).get_chat_conf().host`, max_age)
 }

@@ -86,17 +86,20 @@ class Handler {
   oninteract(element) {}
 }
 
-export function openSocket(url: string, room_id: number) {
+export function openSocket(url: string, uid: number, room_id: number, buvid: string = "", token: string = "") {
   let timer = null;
   let handler = new Handler()
   let ws = new WebSocket(`wss://${url}/sub`);
   let json = {
-    uid: 0,
+    uid: uid,
     roomid: room_id, //上面获取到的room_id
-    protover: 1,
+    protover: 3,
+    buvid: buvid,
     platform: "web",
-    clientver: "1.4.0",
+    type: 2,
+    key: token,
   };
+  console.log(json)
   // WebSocket连接成功回调
   ws.onopen = function () {
     handler.onopen("WebSocket 已连接上")
