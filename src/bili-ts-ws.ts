@@ -93,13 +93,9 @@ export function openSocket(url: string, uid: number, room_id: number, buvid: str
   let json = {
     uid: uid,
     roomid: room_id, //上面获取到的room_id
-    protover: 3,
-    buvid: buvid,
+    protover: 1,
     platform: "web",
-    type: 2,
-    key: token,
   };
-  console.log(json)
   // WebSocket连接成功回调
   ws.onopen = function () {
     handler.onopen("WebSocket 已连接上")

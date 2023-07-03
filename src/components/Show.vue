@@ -37,8 +37,8 @@ const roomData = await get_room_info(roomid)
 // 更新房间号和 uid
 uid = roomData.room_info.uid
 roomid = roomData.room_info.room_id
-conf = await get_chat_conf(roomid)
-const handler = openSocket(conf["host"], uid, roomid, "", conf["token"])
+const conf = await get_chat_conf(roomid)
+const handler = openSocket(conf["host_server_list"][0]["host"], uid, roomid, "", conf["token"])
 
 handler.ongift = gift
 handler.onguard = guard
