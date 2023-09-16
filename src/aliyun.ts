@@ -31,3 +31,7 @@ export async function get_chat_conf(roomid: string | number, max_age: number = -
 export async function get_chat_host(roomid: string | number, max_age: number = -1) {
   return await request(`/live.LiveRoom(${roomid}).get_chat_conf().host`, max_age)
 }
+
+export async function get_token(roomid: string | number) {
+  return await request(`/laplace?roomid=${roomid}`)
+}

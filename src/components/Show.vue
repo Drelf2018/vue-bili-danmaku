@@ -14,7 +14,7 @@ import { ref, onMounted, watch } from 'vue';
 
 import { useRoute } from 'vue-router';
 
-import { get_room_info, get_chat_conf } from '../aliyun'
+import { get_room_info, get_chat_conf, get_token } from '../aliyun'
 
 import { KeepLiveWS } from 'bilibili-live-ws'
 
@@ -34,33 +34,38 @@ if (roomid == "redirect") {
   dms.value.push(makeDanmaku(`https://danmu.nana7mi.link/${roomid}`))
 }
 
+
 // 获取真实房间号 更新房间号和 uid
-const roomData = await get_room_info(roomid)
-uid = roomData.room_info.uid
-roomid = roomData.room_info.room_id
+get_room_info(roomid).then(
+  roomData => {
+    uid = roomData.room_info.uid
+    roomid = roomData.room_info.room_id
 
-// 获取 ws 连接
-const conf = await get_chat_conf(roomid)
-const url = conf["host_server_list"][0]["host"]
-const live = new KeepLiveWS(roomid, {address: `wss://${url}/sub`, uid: uid})
+    // 获取 ws 连接
+    get_chat_conf(roomid).then(
+      conf => {
+        let list = conf["host_server_list"]
+        const url = list[list.length-1]["host"]
+        get_token(roomid).then(
+          info => {
+            const live = new KeepLiveWS(roomid, {
+              address: `wss://${url}/sub`,
+              uid: 3546381790743151,
+              buvid: info.buvid,
+              key: info.token,
+            })
 
-live.on("DANMU_MSG", danmaku)
-live.on("SUPER_CHAT_MESSAGE", superchat)
-live.on("GUARD_BUY", guard)
-live.on("SEND_GIFT", gift)
-live.on("open", () => dms.value.push(makeDanmaku("WebSocket 已连接上")))
-
-// const handler = openSocket(conf["host_server_list"][0]["host"], uid, roomid, "", conf["token"])
-
-// handler.ongift = gift
-// handler.onguard = guard
-// handler.ondanmaku = danmaku
-// handler.onsuperchat = superchat
-// handler.onopen = msg => dms.value.push(makeDanmaku(msg))
-
-// handler.all = console.log
-// live.on("INTERACT_WORD", superchat)
-// handler.oninteract = element => dms.value.push(makeDanmaku(element.data.uname + " 进入直播间"))
+            live.on("DANMU_MSG", danmaku)
+            live.on("SUPER_CHAT_MESSAGE", superchat)
+            live.on("GUARD_BUY", guard)
+            live.on("SEND_GIFT", gift)
+            live.on("open", () => dms.value.push(makeDanmaku("WebSocket 已连接上")))
+          }
+        )
+      }
+    )
+  }
+)
 
 onMounted(() => {  
   var main = document.getElementById("main")
@@ -99,7 +104,7 @@ function danmaku(element) {
   dms.value.push({
     cmd: "DANMU_MSG",
     info: {
-      name: null,  // roomid == 21452505 ? element.info[2][1] : 
+      name: null,
       face: null,
       uid: element.info[2][0],
       sender: element.info[2][0] == uid ? "self" : element.info[2][2] == 1 ? "owner" : element.info[2][7] == "" ? "default" : "guard",
